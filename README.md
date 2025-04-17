@@ -19,7 +19,7 @@ The goal of **minishell** is to deepen understanding of:
 - Redirections: `>`, `>>`, `<`, `<<` (heredoc)
 - Environment variables expansion (`$VAR`)
 - Quoting (single `'` and double `"`)
-- Signal handling (Ctrl+C, Ctrl+\)
+- Signal handling (Ctrl+C, Ctrl+D, Ctrl+\\)
 - Error messages and return codes
 - Command execution from system path (`PATH`)
 
