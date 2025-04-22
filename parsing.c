@@ -1,25 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aelmsafe <aelmsafe@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/20 18:39:12 by aelmsafe          #+#    #+#             */
-/*   Updated: 2025/04/22 19:47:25 by aelmsafe         ###   ########.fr       */
+/*   Created: 2025/04/20 18:38:40 by aelmsafe          #+#    #+#             */
+/*   Updated: 2025/04/22 19:47:40 by aelmsafe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "minishell.h"
 
-# include <unistd.h>
-# include <stdlib.h>
-
-typedef struct s_command
+t_command	*parsing(int ac, char *av[])
 {
-	char				*command;
-	struct s_command	*next;
-}						t_command;
-
-#endif /* MINISHELL_H */
+	
+}
