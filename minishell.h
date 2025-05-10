@@ -22,4 +22,11 @@ typedef struct s_command
 	struct s_command	*next;
 }						t_command;
 
+typedef struct	s_export
+{
+	char	*name;
+	char	*value;
+}				t_export;
+
+
 #endif /* MINISHELL_H */
