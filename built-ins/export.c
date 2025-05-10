@@ -13,28 +13,28 @@ t_export	*ft_new_node(char *s, char *str)
 	return (ret);
 }
 
-int			add_last(t_export **s, t_export *t)
+void	add_last(t_export **s, t_export *t)
 {
+	t_export	*tmp;
+
 	if (!s || !t)
-		return (1);
+		return ;
 	if (!*s)
 	{
 		(*s) = t;
-		return (0);
 	}
 	else
 	{
-		while ((*s)->next)
-			(*s) = (*s)->next;
-		(*s)->next = t;
+		tmp = *s;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = t;
 	}
-	return (0);
 }
 
 
 void	fill_the_stack(t_export **env_var)
 {
-	t_export	*node;
 	int			i;
 	char		*var_name[] = {"COLORTERM", "DBUS_SESSION_BUS_ADDRESS", "DESKTOP_SESSION", "DISPLAY", "GCC_COLORS", "GDMSESSION", "GDM_LANG", "GNOME_DESKTOP_SESSION_ID",
 		"GNOME_SETUP_DISPLAY", "GNOME_TERMINAL_SCREEN", "GNOME_TERMINAL_SERVICE", "GTK_MODULES", "HOME", "IM_CONFIG_PHASE", "LANG", "LANGUAGE",
@@ -45,8 +45,8 @@ void	fill_the_stack(t_export **env_var)
 	i = 0;
 	while (var_name[i])
 	{
-		node = ft_new_node(var_name[i], getenv(var_name[i]));
-		add_last(env_var, node);
+		add_last(env_var, ft_new_node(var_name[i], getenv(var_name[i])));
+		i++;
 	}
 }
 
