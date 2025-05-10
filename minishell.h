@@ -15,6 +15,8 @@
 
 # include <unistd.h>
 # include <stdlib.h>
+# include <stdio.h>
+# include <stddef.h>
 
 typedef struct s_command
 {
@@ -24,8 +26,9 @@ typedef struct s_command
 
 typedef struct	s_export
 {
-	char	*name;
-	char	*value;
+	char			*name;
+	char			*value;
+	struct s_export	*next;
 }				t_export;
 
 
