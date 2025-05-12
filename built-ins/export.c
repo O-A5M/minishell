@@ -1,5 +1,26 @@
 #include "../minishell.h"
 
+void	ft_lstdelone(t_export *lst)
+{
+	free(lst);
+}
+
+void	ft_lstclear(t_export **lst)
+{
+	t_export	*current;
+	t_export	*next;
+
+	if (!lst)
+		return ;
+	current = *lst;
+	while (current)
+	{
+		next = current->next;
+		ft_lstdelone(current);
+		current = next;
+	}
+	*lst = NULL;
+}
 t_export	*ft_new_node(char *s, char *str)
 {
 	t_export	*ret;
@@ -50,20 +71,23 @@ void	fill_the_stack(t_export **env_var)
 	}
 }
 
-	void	export(char *var)
+void	export(char *var)
 {
 	t_export	*env_var;
+    t_export    *tmp;
 
 	env_var = NULL;
 	fill_the_stack(&env_var);
 	if (!var)
 	{
-		while (env_var)
+        tmp = env_var;
+		while (tmp)
 		{
-			printf("%s=\"%s\"\n", env_var->name, env_var->value);
-			env_var = env_var->next;
+			printf("%s=\"%s\"\n", tmp->name, tmp->value);
+			tmp = tmp->next;
 		}
 	}
+    ft_lstclear(&env_var);
 }
 
 int	main(void)
