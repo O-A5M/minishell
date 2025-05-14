@@ -1,5 +1,9 @@
 #include "../minishell.h"
 
+void    add_var_list();
+void    replace_var();
+int     ft_strncmp();
+
 void	ft_lstdelone(t_export *lst)
 {
 	free(lst);
@@ -57,7 +61,7 @@ void	add_last(t_export **s, t_export *t)
 void	fill_the_stack(t_export **env_var)
 {
 	int			i;
-	char		*var_name[] = {"COLORTERM", "DBUS_SESSION_BUS_ADDRESS", "DESKTOP_SESSION", "DISPLAY", "GCC_COLORS", "GDMSESSION", "GDM_LANG", "GNOME_DESKTOP_SESSION_ID",
+	static char		*var_name[] = {"COLORTERM", "DBUS_SESSION_BUS_ADDRESS", "DESKTOP_SESSION", "DISPLAY", "GCC_COLORS", "GDMSESSION", "GDM_LANG", "GNOME_DESKTOP_SESSION_ID",
 		"GNOME_SETUP_DISPLAY", "GNOME_TERMINAL_SCREEN", "GNOME_TERMINAL_SERVICE", "GTK_MODULES", "HOME", "IM_CONFIG_PHASE", "LANG", "LANGUAGE",
 		"LOGNAME", "LS_COLORS", "OLDPWD", "PATH", "PWD", "QT_ACCESSIBILITY", "QT_IM_MODULE", "SESSION_MANAGER", "SHELL", "SHLVL", "SSH_AGENT_LAUNCHER",
 		"SSH_AUTH_SOCK", "SYSTEMD_EXEC_PID", "TERM", "USER", "USERNAME", "VTE_VERSION", "WAYLAND_DISPLAY", "XAUTHORITY", "XDG_CURRENT_DESKTOP",
@@ -69,6 +73,24 @@ void	fill_the_stack(t_export **env_var)
 		add_last(env_var, ft_new_node(var_name[i], getenv(var_name[i])));
 		i++;
 	}
+}
+
+void    add_var_list(char *name, char *value, t_export **list)
+{
+    add_last(list, ft_new_node(name, value));
+}
+
+void    replace_var(char *name, char *value, t_export **list)
+{
+    t_export    *tmp;
+
+    tmp = *list;
+    while (ft_strncmp())
+    {
+        tmp = tmp->next;
+    }
+    ft_bzero(tmp->value, sizeof(tmp->value));
+    ft_strncpy(tmp->value, value, sizeof(value));
 }
 
 void	export(char *var)
@@ -87,6 +109,13 @@ void	export(char *var)
 			tmp = tmp->next;
 		}
 	}
+    else if()
+    {
+        if (ft_strncmp())
+            add_var_list();
+        else
+            replace_var();
+    }
     ft_lstclear(&env_var);
 }
 
