@@ -24,14 +24,13 @@ int	main(int ac, char *av[])
 		set_signals(&sa_int, &sa_quit);
 		while (1337)
 		{
-			execve("/bin/ls",);
 			if (sigaction(SIGINT, &sa_int, NULL) == -1
 				|| sigaction(SIGQUIT, &sa_quit, NULL) == -1)
 			{
 				perror("Sigaction failed: ");
 				exit(1);
 			}
-			line = readline("minishell\% ");
+			line = readline("ZimBomBah\% ");
 			if (line == NULL)
 			{
 				printf("exit\n");
