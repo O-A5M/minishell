@@ -31,5 +31,8 @@ typedef struct	s_export
 	struct s_export	*next;
 }				t_export;
 
+void	handle_signal(int signum);
+void	set_signals(struct sigaction *sa_int, struct sigaction *sa_quit);
+
 
 #endif /* MINISHELL_H */
