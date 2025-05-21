@@ -17,8 +17,9 @@
 # include <stdlib.h>
 # include <signal.h>
 # include <unistd.h>
-# include <readline/readline.h>
-# include <readline/history.h>
+// # include <readline/readline.h>
+// # include <readline/history.h>
+# include "libft/libft.h"
 
 typedef struct s_export
 {

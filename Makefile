@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -lreadline
 
 # Minishell variables
 
@@ -11,6 +11,7 @@ NAME = minishell
 
 LIBFT_D = libft
 LIBFT_N = libft/libft.a
+
 # Rules
 
 all: $(NAME)
@@ -27,12 +28,11 @@ clean:
 
 fclean: clean
 	rm -f $(NAME)
-	rm -f $(LIBFT_N)
-#	fclean -C $(LIBFT_D)
+	fclean -C $(LIBFT_D)
 
 re: fclean $(NAME)
 
 # Extra rules
 
-# .PHONY: clean
+.PHONY: clean
 # .SECONDARY: $(MINISHELL_OBJ_FILES) $(UTILS_OBJ_FILES)

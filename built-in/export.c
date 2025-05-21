@@ -1,26 +1,5 @@
 #include "../minishell.h"
 
-void	ft_lstdelone(t_export *lst)
-{
-	free(lst);
-}
-
-void	ft_lstclear(t_export **lst)
-{
-	t_export	*current;
-	t_export	*next;
-
-	if (!lst)
-		return ;
-	current = *lst;
-	while (current)
-	{
-		next = current->next;
-		ft_lstdelone(current);
-		current = next;
-	}
-	*lst = NULL;
-}
 t_export	*ft_new_node(char *s, char *str)
 {
 	t_export	*ret;
@@ -34,6 +13,7 @@ t_export	*ft_new_node(char *s, char *str)
 	return (ret);
 }
 
+//This one adds node to the end of the list.
 void	add_last(t_export **s, t_export *t)
 {
 	t_export	*tmp;
@@ -53,10 +33,11 @@ void	add_last(t_export **s, t_export *t)
 	}
 }
 
-
+//This is the function that stores the variables and their values in the stack.
 void	fill_the_stack(t_export **env_var)
 {
 	int			i;
+    //this is not efficiant I need to change this methode.
 	char		*var_name[] = {"COLORTERM", "DBUS_SESSION_BUS_ADDRESS", "DESKTOP_SESSION", "DISPLAY", "GCC_COLORS", "GDMSESSION", "GDM_LANG", "GNOME_DESKTOP_SESSION_ID",
 		"GNOME_SETUP_DISPLAY", "GNOME_TERMINAL_SCREEN", "GNOME_TERMINAL_SERVICE", "GTK_MODULES", "HOME", "IM_CONFIG_PHASE", "LANG", "LANGUAGE",
 		"LOGNAME", "LS_COLORS", "OLDPWD", "PATH", "PWD", "QT_ACCESSIBILITY", "QT_IM_MODULE", "SESSION_MANAGER", "SHELL", "SHLVL", "SSH_AGENT_LAUNCHER",
@@ -71,13 +52,17 @@ void	fill_the_stack(t_export **env_var)
 	}
 }
 
+//The main function.
 void	export(char *var)
 {
 	t_export	*env_var;
     t_export    *tmp;
+    char        **new_var;
 
 	env_var = NULL;
+    //filling the stack with the system variables.
 	fill_the_stack(&env_var);
+    //cheking if the there is no argument so I only display the variables.
 	if (!var)
 	{
         tmp = env_var;
@@ -87,10 +72,24 @@ void	export(char *var)
 			tmp = tmp->next;
 		}
 	}
-    ft_lstclear(&env_var);
+    //Checking if the input is valide then add a new variable
+    //if it is valid.
+    if (ft_strchr(var, '='))
+    {
+		//Spliting the input into two parts:
+		//the variable name and value.
+		new_var = ft_split(var, '=');
+		//adding the variable to the list.
+		add_last(&env_var, ft_new_node(new_var[0], new_var[1]));
+		while (tmp)
+		{
+			printf("%s=\"%s\"\n", tmp->name, tmp->value);
+			tmp = tmp->next;
+		}
+    }
 }
 
 int	main(void)
 {
-	export(NULL);
+	export("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=helooloooooo");
 }
