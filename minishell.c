@@ -6,7 +6,7 @@
 /*   By: aelmsafe <aelmsafe@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 18:38:22 by aelmsafe          #+#    #+#             */
-/*   Updated: 2025/04/22 19:47:20 by aelmsafe         ###   ########.fr       */
+/*   Updated: 2025/05/07 12:02:28 by aelmsafe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,32 @@
 
 int	main(int ac, char *av[])
 {
-	t_command	*cmd;
+	struct sigaction	sa_int;
+	struct sigaction	sa_quit;
+	char				*line;
 
-	if (ac == 1)
+	(void)av;
+	if (isatty(STDIN_FILENO) && ac == 1)
 	{
+		set_signals(&sa_int, &sa_quit);
 		while (1337)
 		{
-
+			execve("/bin/ls",);
+			if (sigaction(SIGINT, &sa_int, NULL) == -1
+				|| sigaction(SIGQUIT, &sa_quit, NULL) == -1)
+			{
+				perror("Sigaction failed: ");
+				exit(1);
+			}
+			line = readline("minishell\% ");
+			if (line == NULL)
+			{
+				printf("exit\n");
+				break ;
+			}
+			add_history(line);
+			free(line);
 		}
-		parsing(ac, av);
-	}
-
-	else
-	{
-		execute();
+		rl_clear_history();
 	}
 }
