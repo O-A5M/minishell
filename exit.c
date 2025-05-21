@@ -16,7 +16,7 @@ void	sigaction_exit(void)
 {
 	rl_clear_history();
 	perror("Sigaction failed: ");
-	exit(1);
+	exit(18);
 }
 
 void	endoffile(void)
