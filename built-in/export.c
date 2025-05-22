@@ -81,6 +81,7 @@ void	export(char *var)
 		new_var = ft_split(var, '=');
 		//adding the variable to the list.
 		add_last(&env_var, ft_new_node(new_var[0], new_var[1]));
+		tmp = env_var;
 		while (tmp)
 		{
 			printf("%s=\"%s\"\n", tmp->name, tmp->value);
