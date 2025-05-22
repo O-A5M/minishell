@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -lreadline
+CFLAGS = -Wall -Wextra -Werror
 
 # Minishell variables
 
@@ -28,11 +28,11 @@ clean:
 
 fclean: clean
 	rm -f $(NAME)
-	fclean -C $(LIBFT_D)
+	$(MAKE) fclean -C $(LIBFT_D)
 
 re: fclean $(NAME)
 
 # Extra rules
 
 .PHONY: clean
-# .SECONDARY: $(MINISHELL_OBJ_FILES) $(UTILS_OBJ_FILES)
+.SECONDARY: $(MINISHELL_OBJ_FILES) $(LIBFT_N)
