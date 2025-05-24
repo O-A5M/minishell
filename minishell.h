@@ -26,6 +26,7 @@ typedef struct s_export
 	char			*name;
 	char			*value;
 	struct s_export	*next;
+	struct s_export	*previous;
 }				t_export;
 
 //struct for storing the component of the simple command.
