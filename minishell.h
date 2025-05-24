@@ -28,6 +28,7 @@ typedef struct s_export
 	struct s_export	*next;
 }				t_export;
 
+//struct for storing the component of the simple command.
 typedef struct	s_simple_command
 {
 	//which command should be executed.
@@ -40,9 +41,19 @@ typedef struct	s_simple_command
 	char	*red_in;
 	//output redirection (>>, >)
 	char	*red_out;
-	//flag for the input 0=> and 1=>>
+	//flag for the output 0=(>) and 1=(>>)
 	int		out_mode;
 }				t_simple_command;
+
+//struct for the pipline type of commands
+typedef struct	s_pipeline
+{
+	//the commands between the pipes
+	t_simple_command			*command;
+	struct s_pipeline			*next;
+	struct s_pipeline			*previouse;
+}				t_pipeline;
+
 
 void	set_signals(struct sigaction *sa_int, struct sigaction *sa_quit);
 void	parsing(void);
