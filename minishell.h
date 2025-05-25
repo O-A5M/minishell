@@ -30,7 +30,7 @@ typedef struct s_export
 }				t_export;
 
 //struct for storing the component of the simple command.
-typedef struct	s_simple_command
+typedef struct s_simple_command
 {
 	//which command should be executed.
 	char	*command_name;
@@ -47,7 +47,7 @@ typedef struct	s_simple_command
 }				t_simple_command;
 
 //struct for the pipline type of commands
-typedef struct	s_pipeline
+typedef struct s_pipeline
 {
 	//the commands between the pipes
 	t_simple_command			*command;
@@ -55,10 +55,12 @@ typedef struct	s_pipeline
 	struct s_pipeline			*previouse;
 }				t_pipeline;
 
-
 void	set_signals(struct sigaction *sa_int, struct sigaction *sa_quit);
 void	parsing(void);
 void	sigaction_exit(void);
 void	endoffile(void);
+char	**tokenizer(char *cl);
+void	unclosed_quotes_error(void);
+void	after_operator_error(void);
 
 #endif /* MINISHELL_H */
