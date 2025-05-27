@@ -3,7 +3,7 @@ CFLAGS = -Wall -Wextra -Werror
 
 # Minishell variables
 
-MINISHELL_SRC_FILES = minishell.c signal.c parsing.c exit.c
+MINISHELL_SRC_FILES = minishell.c signal.c parsing.c exit.c tokenizer.c tokenization_errors.c
 MINISHELL_OBJ_FILES = $(MINISHELL_SRC_FILES:.c=.o)
 NAME = minishell
 

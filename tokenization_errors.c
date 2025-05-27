@@ -1,41 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   tokenization_errors.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aelmsafe <aelmsafe@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/20 18:38:40 by aelmsafe          #+#    #+#             */
-/*   Updated: 2025/04/22 19:47:40 by aelmsafe         ###   ########.fr       */
+/*   Created: 2025/05/25 13:05:34 by aelmsafe          #+#    #+#             */
+/*   Updated: 2025/05/25 13:05:37 by aelmsafe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	read_func(void)
+/* Will have to pay attention for allocated memory */
+void	unclosed_quotes_error(void)
 {
-	char	*line;
-
-	line = readline("ZimBomBah$ ");
-	if (line == NULL)
-		endoffile();
-	add_history(line);
-	tokenizer(line);
-	free(line);
-	return ;
+	printf("Parsing Error: Missing Quote Closing Character\n");
+	exit(1);
 }
 
-void	parsing(void)
+void	after_operator_error(void)
 {
-	struct sigaction	sa_int;
-	struct sigaction	sa_quit;
-
-	set_signals(&sa_int, &sa_quit);
-	while (1337)
-	{
-		if (sigaction(SIGINT, &sa_int, NULL) == -1
-			|| sigaction(SIGQUIT, &sa_quit, NULL) == -1)
-			sigaction_exit();
-		read_func();
-	}
+	printf("Parsing Error: Missing Token After Operator\n");
+	exit(1);
 }
