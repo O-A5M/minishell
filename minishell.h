@@ -46,6 +46,34 @@ typedef struct s_simple_command
 	int		out_mode;
 }				t_simple_command;
 
+typedef enum e_input
+{
+	STDIN,
+	PIPE_IN,
+	REDIR_IN,
+	HEREDOC
+}			t_input;
+
+typedef enum e_output
+{
+	STDOUT,
+	PIPE_OUT,
+	REDIR_OUT,
+	APPEND
+}			t_output;
+
+typedef struct s_cmd
+{
+	char			*name;
+	char			**args;
+	int				is_built_in;
+	t_input			input_type;
+	char			*infile;
+	t_output		output_type;
+	char			*outfile;
+	struct s_cmd	*next;
+}			t_cmd;
+
 //struct for the pipline type of commands
 typedef struct s_pipeline
 {
