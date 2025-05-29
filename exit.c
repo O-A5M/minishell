@@ -25,3 +25,8 @@ void	endoffile(void)
 	printf("exit\n");
 	exit(0);
 }
+
+void	allocation_error(void)
+{
+	printf("Error: Failed to dynamically allocate space.\n");
+}

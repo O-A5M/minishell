@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	operator_token(char **cl, size_t *ct)
+/*void	operator_token(char **cl, size_t *ct)
 {
 	char	redir;
 
@@ -80,17 +80,85 @@ size_t	count_tokens(char *cl)
 	}
 	return (ct);
 }
+*/
+
+void	get_expanded_token(char *cl, int *idx, t_cmd **pipeline, t_args **args)
+{
+
+}
+
+void	get_meta_token(char *cl, int *idx, t_cmd **pipeline)
+{
+	
+}
+
+void	get_normal_token(char *cl, int *idx, t_cmd **pipeline, t_args **args)
+{
+	
+}
+
+char	*get_quoted_token(char *cl, int *index, t_cmd **pipeline, t_args **args)
+{
+	unsigned int	start_index;
+	char			*quoted_text;
+	char			quote_character;
+
+	quote_character = cl[*index];
+	*index += 1;
+	start_index = (unsigned int)*index;
+	while (cl[*index] != '\0' && cl[*index] != quote_character)
+	*index += 1;
+	if (cl[*index] == '\0')
+	unclosed_quotes_error();
+	quoted_text = ft_substr(cl, start_index, (size_t)*index - (size_t)start_index);
+	*index += 1;
+	append_arg(args, quoted_text);
+	return (quoted_text);
+}
+
+void	get_tokens(char *cl, t_cmd **pipeline_head)
+{
+	int		idx;
+	t_cmd	*pipeline;
+	t_args	*args;
+
+	idx = 0;
+	args = NULL;
+	while (cl[idx])
+	{
+		while (cl[idx] == ' ' || (cl[idx] >= 9 && cl[idx] <= 13))
+			idx++;
+		if (cl[idx] == '\'' || cl[idx] == '"')
+			get_quoted_token(cl, &idx, pipeline, &args);
+		if (cl[idx] == '|' || cl[idx] == '>' || cl[idx] == '<')
+			get_meta_token(cl, &idx, pipeline);
+		if (cl[idx] == '$')
+			get_expanded_token(cl, &idx, pipeline, &args);
+		if (cl[idx] != '\'' && cl[idx] != '"' && cl[idx] != '|'
+			&& cl[idx] != '>' && cl[idx] != '<' && cl[idx] != '$'
+			&& cl[idx] != ' ' && !(cl[idx] >= 9 && cl[idx] <= 13))
+			get_normal_token(cl, &idx, pipeline, &args);
+	}
+}
 
 char	**tokenizer(char *cl)
 {
-	char	**tokens;
-	size_t	len;
+	t_cmd	*pipeline_head;
+	char	*word;
 
-	tokens = NULL;
-	len = count_tokens(cl);
-	printf("You have %d tokens.\n", (int)len);
-	tokens = malloc(sizeof(char *) * (len + 1));
-	if (!tokens)
-		return (NULL);
+	pipeline_head = new_command();
+	get_tokens(cl, &pipeline_head);
+	// while (*cl)
+	// {
+	// 	// word = get_next_token(cl, &index);
+	// 	insert_token(&pipeline, word);
+	// }
+	// tokens = NULL;
+	// len = count_tokens(cl);
+	// printf("You have %d tokens.\n", (int)len);
+	// tokens = malloc(sizeof(char *) * (len + 1));
+	// if (!tokens)
+	// 	return (NULL);
+
 	return (tokens);
 }
