@@ -48,7 +48,6 @@ typedef struct s_simple_command
 
 typedef enum e_input
 {
-	NONE,
 	STDIN,
 	PIPE_IN,
 	REDIR_IN,
@@ -57,7 +56,6 @@ typedef enum e_input
 
 typedef enum e_output
 {
-	NONE,
 	STDOUT,
 	PIPE_OUT,
 	REDIR_OUT,
@@ -78,6 +76,7 @@ typedef struct s_cmd
 typedef struct s_args
 {
 	char	*arg;
+	int		arg_is_done;
 	struct s_args *next;
 }				t_args;
 

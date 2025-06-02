@@ -12,21 +12,36 @@
 
 #include "minishell.h"
 
-t_cmd	*new_command(void)
+t_cmd	*new_command(char **args)
 {
 	t_cmd	*node;
 
 	node = malloc(sizeof(t_cmd));
-	if (!node)
+	if (node == NULL)
 		allocation_error();
-	node->args = NULL;
+	node->args = args;
 	node->is_built_in = 0;
-	node->input_type = NONE;
+	node->input_type = STDIN;
 	node->infile = NULL;
-	node->output_type = NONE;
+	node->output_type = STDOUT;
 	node->outfile = NULL;
 	node->next = NULL;
 	return (node);
+}
+
+void	append_command(t_cmd **head, char **args)
+{
+	t_cmd	*ptr;
+
+	ptr = *head;
+	if (*head == NULL)
+		*head = new_command(args);
+	else
+	{
+		while (ptr->next != NULL)
+			ptr = ptr->next;
+		ptr->next = new_command(args);
+	}
 }
 
 t_args	*new_arg(char *arg)
@@ -34,28 +49,38 @@ t_args	*new_arg(char *arg)
 	t_args	*new;
 
 	new = malloc(sizeof(t_args));
-	if (!new)
+	if (new == NULL)
 		allocation_error();
 	new->arg = arg;
+	new->arg_is_done = 0;
 	new->next = NULL;
 	return (new);
 }
 
-void	*append_arg(t_args **head, char *arg)
+void	append_arg(char *arg, t_args **head, int arg_is_done)
 {
 	t_args	*ptr;
+	char	*old_arg;
 
 	ptr = *head;
-	if (!(*head))
-	{
+	if (*head == NULL)
 		*head = new_arg(arg);
-		if (!(*head))
-			allocation_error();
-	}
 	else
 	{
-		while (ptr->next)
+		while (ptr->next != NULL)
 			ptr = ptr->next;
-		ptr->next = new_arg(arg);
+		if (ptr->arg_is_done == 1)
+		{
+			ptr->next = new_arg(arg);
+		}
+		else
+		{
+			old_arg = ptr->arg;
+			ptr->arg = ft_strjoin(ptr->arg, arg);
+			free(old_arg);
+			free(arg);
+			if (arg_is_done)
+				ptr->arg_is_done = 1;
+		}
 	}
 }
