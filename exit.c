@@ -30,3 +30,9 @@ void	allocation_error(void)
 {
 	printf("Error: Failed to dynamically allocate space.\n");
 }
+
+void	pipe_error(void)
+{
+	printf("minishell: syntax error near unexpected token `|'\n");
+	exit(1);
+}

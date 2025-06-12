@@ -1,43 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   struct_functions_1.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aelmsafe <aelmsafe@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/20 18:38:40 by aelmsafe          #+#    #+#             */
-/*   Updated: 2025/04/22 19:47:40 by aelmsafe         ###   ########.fr       */
+/*   Created: 2025/06/12 09:57:15 by aelmsafe          #+#    #+#             */
+/*   Updated: 2025/06/12 09:57:18 by aelmsafe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*read_func(void)
+t_cmd	*create_command(char **args)
 {
-	char	*line;
+	t_cmd	*new;
 
-	line = readline("ZimBomBah$ ");
-	if (line == NULL)
-		endoffile();
-	return (line);
+	new = malloc(sizeof(t_cmd) * 1);
+	if (new == NULL)
+		return (NULL);
+	new->args = NULL;
+	new->next = NULL;
+	return (new);
 }
 
-int	main(void)
+void	new_command(t_cmd **head, char **args)
 {
-	struct sigaction	sa_int;
-	struct sigaction	sa_quit;
-	char				*cl;
+	t_cmd	*ptr;
 
-	set_signals(&sa_int, &sa_quit);
-	while (1337)
+	if (*head == NULL)
+		*head = create_command(args);
+	else
 	{
-		if (sigaction(SIGINT, &sa_int, NULL) == -1
-			|| sigaction(SIGQUIT, &sa_quit, NULL) == -1)
-			sigaction_exit();
-		cl = read_func();
-		add_history(cl);
-		parser(cl);
-		free(cl);
+		ptr = *head;
+		while (ptr->next != NULL)
+		{
+			ptr = ptr->next;
+		}
+		ptr->next = create_command(args);
 	}
-	rl_clear_history();
 }
