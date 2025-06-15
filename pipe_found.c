@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipe_found.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aelmsafe <aelmsafe@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/16 00:29:29 by aelmsafe          #+#    #+#             */
+/*   Updated: 2025/06/16 00:29:31 by aelmsafe         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 char	**list_to_array(t_args **args)
@@ -9,7 +21,7 @@ char	**list_to_array(t_args **args)
 
 	len = args_amount(args);
 	arr = malloc(sizeof(char *) * (len + 1));
-	if (arr = NULL)
+	if (arr == NULL)
 		return (NULL);
 	ptr = *args;
 	index = 0;

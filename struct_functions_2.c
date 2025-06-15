@@ -52,7 +52,7 @@ void	append_arg(t_args **head, char *arg, int done_arg)
 		ptr = *head;
 		while (ptr->next != NULL)
 			ptr = ptr->next;
-		if (ptr->arg_is_done = 0)
+		if (ptr->arg_is_done == 0)
 		{
 			tmp = ptr->arg;
 			ptr->arg = ft_strjoin(ptr->arg, arg);
