@@ -12,62 +12,28 @@
 
 #include "minishell.h"
 
-void	add_text(char *text_chunk, char **dst)
+char	*add_text(char *text_chunk, char *dst)
 {
-	char	*old_dst;
+	char	*result;
 
-	old_dst = *dst;
-	if (*dst == NULL)
-		*dst = ft_strdup(text_chunk);
-	else
-		*dst = ft_strjoin(*dst, text_chunk);
-	free(old_dst);
-	free(text_chunk);
-}
-
-char	*valid_token_expansion(char *cl, unsigned int *index)
-{
-	char			*variable_name;
-	char			*expanded_variable;
-	unsigned int	start_index;
-
-	start_index = *index;
-	while (cl[*index] == '_' || ft_isalnum(cl[*index]))
-		*index += 1;
-	variable_name = ft_substr(cl, start_index, *index - start_index);
-	expanded_variable = getenv(variable_name);
-	free(variable_name);
-	if (expanded_variable == NULL)
-		expanded_variable = ft_strdup("");
-	return (expanded_variable);
-}
-
-char	*expand_token(char *cl, unsigned int *index)
-{
-	char			*expanded_token;
-	unsigned int	start_index;
-
-	*index += 1;
-	start_index = *index;
-	if (cl[*index] == '_' || ft_isalpha(cl[*index]))
-		expanded_token = valid_token_expansion(cl, index);
-	else if (is_a_quote(cl[*index]))
-		expanded_token = ft_strdup("");
-	else if (cl[*index] == '?')
+	if (dst == NULL)
 	{
-		*index += 1;
-		expanded_token = ft_itoa(EXIT_FAILURE);
+		result = ft_strdup(text_chunk);
+		free(text_chunk);
 	}
 	else
-		expanded_token = ft_strdup("$");
-	return (expanded_token);
+	{
+		result = ft_strjoin(dst, text_chunk);
+		free(text_chunk);
+		free(dst);
+	}
+	return (result);
 }
 
 char	*expand_quoted_text(char *quoted_text)
 {
 	unsigned int	start_index;
 	unsigned int	index;
-	char			*text_chunk;
 	char			*expanded_quoted_text;
 
 	expanded_quoted_text = NULL;
@@ -77,12 +43,11 @@ char	*expand_quoted_text(char *quoted_text)
 		start_index = index;
 		while (quoted_text[index] != '\0' && quoted_text[index] != '$')
 			index += 1;
-		add_text(ft_substr(quoted_text, start_index,
-				index - start_index), &expanded_quoted_text);
-		// does it also copy the `$` character, that'd be a problem???
+		expanded_quoted_text = add_text(ft_substr(quoted_text, start_index,
+					index - start_index), expanded_quoted_text);
 		if (quoted_text[index] != '\0')
-			add_text(expand_token(quoted_text, &index),
-				&expanded_quoted_text);
+			expanded_quoted_text = add_text(expand_token(quoted_text, &index),
+					expanded_quoted_text);
 	}
 	if (expanded_quoted_text == NULL)
 		return (quoted_text);

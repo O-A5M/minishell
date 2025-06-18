@@ -1,9 +1,9 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -g -Wall -Wextra -Werror
 
 # Minishell variables
 
-MINISHELL_SRC_FILES = minishell.c signal.c parsing.c exit.c tokenizer.c tokenization_errors.c
+MINISHELL_SRC_FILES = minishell.c signal.c parser.c exit.c expansion_token.c argument_triggered.c other_token.c quoted_token.c struct_functions_1.c struct_functions_2.c struct_functions_3.c token_type_functions_1.c token_type_functions_2.c
 MINISHELL_OBJ_FILES = $(MINISHELL_SRC_FILES:.c=.o)
 NAME = minishell
 

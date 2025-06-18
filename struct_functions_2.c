@@ -25,28 +25,15 @@ t_args	*create_arg(char *arg, int done_arg)
 	return (new);
 }
 
-// void	new_arg(t_args **args_head, char *arg, int done_arg)
-// {
-// 	t_args	*ptr;
-
-// 	if (*args_head == NULL)
-// 		*args_head = create_arg(arg, done_arg);
-// 	else
-// 	{
-// 		ptr = *args_head;
-// 		while (ptr->next != NULL)
-// 			ptr = ptr->next;
-// 		ptr->next = create_arg(arg, done_arg);
-// 	}
-// }
-
 void	append_arg(t_args **args_head, char *arg, int done_arg)
 {
 	t_args	*ptr;
 	char	*tmp;
 
 	if (*args_head == NULL)
+	{
 		*args_head = create_arg(arg, done_arg);
+	}
 	else
 	{
 		ptr = *args_head;

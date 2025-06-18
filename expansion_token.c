@@ -22,7 +22,7 @@ char	*valid_token_expansion(char *cl, unsigned int *index)
 	while (cl[*index] == '_' || ft_isalnum(cl[*index]))
 		*index += 1;
 	variable_name = ft_substr(cl, start_index, *index - start_index);
-	expanded_variable = getenv(variable_name);
+	expanded_variable = ft_strdup(getenv(variable_name));
 	free(variable_name);
 	if (expanded_variable == NULL)
 		expanded_variable = ft_strdup("");

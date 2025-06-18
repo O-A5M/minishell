@@ -51,6 +51,15 @@ typedef struct s_redir_list
 	struct s_redir_list	*next;
 }				t_redir_list;
 
+//	List that contains nodes, each node with `arg` where a single token
+//	is stored, and a flag that determines if the arg is complete yet or not.
+typedef struct s_args
+{
+	char			*arg;
+	int				arg_is_done;
+	struct s_args	*next;
+}				t_args;
+
 //	List that contains nodes, each node with the command array `args`,
 //	and the redirection occurences list in `redirections`.
 typedef struct s_cmd
@@ -61,15 +70,6 @@ typedef struct s_cmd
 	struct s_cmd	*last_node;
 	struct s_cmd	*next;
 }			t_cmd;
-
-//	List that contains nodes, each node with `arg` where a single token
-//	is stored, and a flag that determines if the arg is complete yet or not.
-typedef struct s_args
-{
-	char			*arg;
-	int				arg_is_done;
-	struct s_args	*next;
-}				t_args;
 
 //	All the necessary function prototypes for our unique minishell project.
 char			*read_func(void);
@@ -82,6 +82,7 @@ void			endoffile(void);
 int				is_a_whitespace(char c);
 int				is_a_pipe(char c);
 int				is_a_redir(char c);
+t_redir_type	what_redirection_type(char *cl, unsigned int *index);
 int				is_an_expansion(char c);
 int				is_a_quote(char c);
 int				is_other(char c);
@@ -96,19 +97,27 @@ void			expansion_found(char *cl, unsigned int *index,
 void			other_found(char *cl, unsigned int *index,
 					t_cmd **command);
 char			*get_normal_token(char *cl, unsigned int *index);
+char			*add_text(char *text_chunk, char *dst);
+char			*valid_token_expansion(char *cl, unsigned int *index);
+char			*expand_token(char *cl, unsigned int *index);
+char			*expand_quoted_text(char *quoted_text);
+char			*get_quoted_token(char *cl, unsigned int *index);
 void			pipe_error(void);
 void			allocation_error(void);
-t_cmd			*create_command(char **args_array, t_list *args_list,
-				t_redir_list *redirection_list);
+t_cmd			*create_command(char **args_array, t_args *args_list,
+					t_redir_list *redirection_list);
 void			append_command(t_cmd **head, char **args_array,
-				t_list *args_list, t_redir_list *redirection_list);
+					t_args *args_list, t_redir_list *redirection_list);
 t_args			*create_arg(char *arg, int done_arg);
 void			append_arg(t_args **head, char *arg, int done_arg);
 size_t			list_len(t_args *args);
 char			**list_to_arr(t_args *args);
 void			free_args(t_args *args);
 t_redir_list	*create_redir(t_redir_type redir_type, char *filename);
-void			append_redir(t_redir_list **head, t_redir_type redir_type,
+void			append_redir(t_cmd *cmd_head, t_redir_type redir_type,
 					char *filename);
+
+void			unclosed_quotes_error(void);
+void			redirection_error(char c);
 
 #endif /* MINISHELL_H */

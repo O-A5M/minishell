@@ -22,7 +22,6 @@ t_redir_list	*create_redir(t_redir_type redir_type, char *filename)
 	new->redir_type = redir_type;
 	new->filename = filename;
 	new->next = NULL;
-	// (*head)->redirections = new;
 	return (new);
 }
 
