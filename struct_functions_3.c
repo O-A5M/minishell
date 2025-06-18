@@ -12,8 +12,7 @@
 
 #include "minishell.h"
 
-t_redir_list	*create_redir(t_cmd **head, t_redir_type redir_type,
-				char *filename)
+t_redir_list	*create_redir(t_redir_type redir_type, char *filename)
 {
 	t_redir_list	*new;
 
@@ -23,19 +22,22 @@ t_redir_list	*create_redir(t_cmd **head, t_redir_type redir_type,
 	new->redir_type = redir_type;
 	new->filename = filename;
 	new->next = NULL;
+	// (*head)->redirections = new;
 	return (new);
 }
 
-void	append_redir(t_redir_list **head, t_redir_type redir_type,
+void	append_redir(t_cmd *cmd_head, t_redir_type redir_type,
 		char *filename)
 {
 	t_redir_list	*ptr;
+	t_cmd			*last_command;
 
-	if (*head == NULL)
-		*head = create_redir(head, redir_type, filename);
+	last_command = cmd_head->last_node;
+	if (last_command->redirections == NULL)
+		last_command->redirections = create_redir(redir_type, filename);
 	else
 	{
-		ptr = *head;
+		ptr = last_command->redirections;
 		while (ptr->next != NULL)
 		{
 			ptr = ptr->next;

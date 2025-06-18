@@ -36,3 +36,9 @@ void	pipe_error(void)
 	printf("minishell: syntax error near unexpected token `|'\n");
 	exit(1);
 }
+
+void	redirection_error(char c)
+{
+	printf("minishell: syntax error near unexpected token `%c'\n", c);
+	exit(1);
+}

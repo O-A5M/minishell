@@ -55,8 +55,10 @@ typedef struct s_redir_list
 //	and the redirection occurences list in `redirections`.
 typedef struct s_cmd
 {
-	char			**args;
+	char			**args_array;
+	t_args			*args_list;
 	t_redir_list	*redirections;
+	struct s_cmd	*last_node;
 	struct s_cmd	*next;
 }			t_cmd;
 
@@ -84,20 +86,22 @@ int				is_an_expansion(char c);
 int				is_a_quote(char c);
 int				is_other(char c);
 void			quote_found(char *cl, unsigned int *index,
-					t_args **args, t_cmd **command);
+					t_cmd **command);
 void			pipe_found(char *cl, unsigned int *index,
-					t_args **args, t_cmd **command);
+					t_cmd **command);
 void			redir_found(char *cl, unsigned int *index,
-					t_args **args, t_cmd **command);
+					t_cmd **command);
 void			expansion_found(char *cl, unsigned int *index,
-					t_args **args, t_cmd **command);
+					t_cmd **command);
 void			other_found(char *cl, unsigned int *index,
-					t_args **args, t_cmd **command);
+					t_cmd **command);
 char			*get_normal_token(char *cl, unsigned int *index);
 void			pipe_error(void);
 void			allocation_error(void);
-t_cmd			*create_command(char **args);
-void			append_command(t_cmd **head, char **args);
+t_cmd			*create_command(char **args_array, t_list *args_list,
+				t_redir_list *redirection_list);
+void			append_command(t_cmd **head, char **args_array,
+				t_list *args_list, t_redir_list *redirection_list);
 t_args			*create_arg(char *arg, int done_arg);
 void			append_arg(t_args **head, char *arg, int done_arg);
 size_t			list_len(t_args *args);

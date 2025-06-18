@@ -12,25 +12,30 @@
 
 #include "minishell.h"
 
-t_cmd	*create_command(char **args, t_redir_list *redir_list)
+t_cmd	*create_command(char **args_array, t_list *args_list, t_redir_list *redirection_list)
 {
 	t_cmd	*new;
 
 	new = malloc(sizeof(t_cmd) * 1);
 	if (new == NULL)
 		return (NULL);
-	new->args = args;
-	new->redirections = redir_list;
+	new->args_array = args_array;
+	new->args_list = args_list;
+	new->redirections = redirection_list;
+	// new->last_node = new;
 	new->next = NULL;
 	return (new);
 }
 
-void	append_command(t_cmd **head, char **args, t_redir_list *redir_list)
+void	append_command(t_cmd **head, char **args_array, t_list *args_list, t_redir_list *redirection_list)
 {
 	t_cmd	*ptr;
 
 	if (*head == NULL)
-		*head = create_command(args, redir_list);
+	{
+		*head = create_command(args_array, args_list, redirection_list);
+		(*head)->last_node = *head;
+	}
 	else
 	{
 		ptr = *head;
@@ -38,6 +43,7 @@ void	append_command(t_cmd **head, char **args, t_redir_list *redir_list)
 		{
 			ptr = ptr->next;
 		}
-		ptr->next = create_command(args, redir_list);
+		ptr->next = create_command(args_array, args_list, redirection_list);
+		(*head)->last_node = ptr->next;
 	}
 }
