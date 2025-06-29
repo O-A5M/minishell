@@ -1,26 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenization_errors.c                              :+:      :+:    :+:   */
+/*   token_type_functions.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aelmsafe <aelmsafe@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/25 13:05:34 by aelmsafe          #+#    #+#             */
-/*   Updated: 2025/05/25 13:05:37 by aelmsafe         ###   ########.fr       */
+/*   Created: 2025/06/04 15:03:17 by aelmsafe          #+#    #+#             */
+/*   Updated: 2025/06/04 15:03:18 by aelmsafe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* Will have to pay attention for allocated memory */
-void	unclosed_quotes_error(void)
+int	is_an_expansion(char c)
 {
-	printf("Parsing Error: Missing Quote Closing Character\n");
-	exit(1);
+	if (c == '$')
+		return (1);
+	else
+		return (0);
 }
 
-void	after_operator_error(void)
+int	is_a_quote(char c)
 {
-	printf("Parsing Error: Missing Token After Operator\n");
-	exit(1);
+	if (c == '"' || c == '\'')
+		return (1);
+	else
+		return (0);
+}
+
+int	is_other(char c)
+{
+	if (!is_a_quote(c) && !is_a_pipe(c) && !is_a_redir(c)
+		&& !is_a_whitespace(c) && !is_an_expansion(c) && c != '\0')
+		return (1);
+	else
+		return (0);
 }

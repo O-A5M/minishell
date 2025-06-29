@@ -29,4 +29,23 @@ void	endoffile(void)
 void	allocation_error(void)
 {
 	printf("Error: Failed to dynamically allocate space.\n");
+	exit(1);
+}
+
+void	pipe_error(void)
+{
+	printf("minishell: syntax error near unexpected token `|'\n");
+	exit(1);
+}
+
+void	redirection_error(char c)
+{
+	printf("minishell: syntax error near unexpected token `%c'\n", c);
+	exit(1);
+}
+
+void	unclosed_quotes_error(void)
+{
+	printf("Parsing Error: Missing Quote Closing Character\n");
+	exit(1);
 }
