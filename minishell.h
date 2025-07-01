@@ -21,6 +21,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "libft/libft.h"
+# include "execution/include/execution.h"
 
 //	List that for every node, contains the variable name in `name`,
 //	along with the corresponding value stored in `value`.
@@ -116,8 +117,11 @@ void			free_args(t_args *args);
 t_redir_list	*create_redir(t_redir_type redir_type, char *filename);
 void			append_redir(t_cmd *cmd_head, t_redir_type redir_type,
 					char *filename);
-
 void			unclosed_quotes_error(void);
 void			redirection_error(char c);
+
+// Temprary definition of the execution functions.
+
+void  start_execution(t_cmd *cmd, char **env);
 
 #endif /* MINISHELL_H */

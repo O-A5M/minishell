@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "execution/include/execution.h"
 
 char	*read_func(void)
 {
@@ -22,12 +23,15 @@ char	*read_func(void)
 	return (line);
 }
 
-int	main(void)
+int	main(int ac, char **av, char **env)
 {
 	struct sigaction	sa_int;
 	struct sigaction	sa_quit;
 	char				*cl;
+	t_cmd				*cmd;
 
+	(void)ac;
+	(void)av;
 	set_signals(&sa_int, &sa_quit);
 	while (1337)
 	{
@@ -36,7 +40,9 @@ int	main(void)
 			sigaction_exit();
 		cl = read_func();
 		add_history(cl);
-		parser(cl);
+		cmd = parser(cl);
+		fork();
+		start_execution(cmd, env);
 		free(cl);
 	}
 	rl_clear_history();
