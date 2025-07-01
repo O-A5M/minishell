@@ -64,18 +64,16 @@ t_cmd	*parser(char *cl)
 	{
 		while (is_a_whitespace(cl[index]))
 			index += 1;
-		if ((index != -1) && (is_other(cl[index])))
+		if (is_other(cl[index]))
 			other_found(cl, &index, &command);
-		if ((index != -1) && (is_a_quote(cl[index])))
+		if (is_a_quote(cl[index]))
 			quote_found(cl, &index, &command);
-		if ((index != -1) && (is_an_expansion(cl[index])))
+		if (is_an_expansion(cl[index]))
 			expansion_found(cl, &index, &command);
-		if ((index != -1) && (is_a_pipe(cl[index])))
+		if (is_a_pipe(cl[index]))
 			pipe_found(cl, &index, &command);
-		if ((index != -1) && (is_a_redir(cl[index])))
+		if (is_a_redir(cl[index]))
 			redir_found(cl, &index, &command);
-		if (index == -1)
-			break ;
 	}
 	(command->last_node)->args_array
 		= list_to_arr((command->last_node)->args_list);
