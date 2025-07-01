@@ -73,7 +73,7 @@ typedef struct s_cmd
 
 //	All the necessary function prototypes for our unique minishell project.
 char			*read_func(void);
-int				parser(char *cl);
+t_cmd			*parser(char *cl);
 void			set_signals(struct sigaction *sa_int,
 					struct sigaction *sa_quit);
 void			handle_signal(int signum);
