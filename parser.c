@@ -52,7 +52,7 @@ void	print_all(t_cmd *command)
 	}
 }
 
-int	parser(char *cl)
+t_cmd	*parser(char *cl)
 {
 	t_cmd			*command;
 	unsigned int	index;
@@ -77,6 +77,6 @@ int	parser(char *cl)
 	}
 	(command->last_node)->args_array
 		= list_to_arr((command->last_node)->args_list);
-	print_all(command);
-	return (0);
+	// print_all(command);
+	return (command);
 }
