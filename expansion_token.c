@@ -32,10 +32,10 @@ char	*valid_token_expansion(char *cl, unsigned int *index)
 char	*expand_token(char *cl, unsigned int *index)
 {
 	char			*expanded_token;
-	unsigned int	start_index;
+	// unsigned int	start_index;
 
 	*index += 1;
-	start_index = *index;
+	// start_index = *index;
 	if (cl[*index] == '_' || ft_isalpha(cl[*index]))
 		expanded_token = valid_token_expansion(cl, index);
 	else if (is_a_quote(cl[*index]))
