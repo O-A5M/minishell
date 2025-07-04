@@ -6,7 +6,7 @@
 /*   By: aelmsafe <aelmsafe@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 12:36:14 by aelmsafe          #+#    #+#             */
-/*   Updated: 2025/06/13 12:36:15 by aelmsafe         ###   ########.fr       */
+/*   Updated: 2025/07/04 17:21:15 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@ char	*valid_token_expansion(char *cl, unsigned int *index)
 char	*expand_token(char *cl, unsigned int *index)
 {
 	char			*expanded_token;
-	unsigned int	start_index;
+	// unsigned int	start_index;
 
 	*index += 1;
-	start_index = *index;
+	// start_index = *index;
 	if (cl[*index] == '_' || ft_isalpha(cl[*index]))
 		expanded_token = valid_token_expansion(cl, index);
 	else if (is_a_quote(cl[*index]))
