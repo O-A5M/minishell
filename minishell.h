@@ -6,7 +6,7 @@
 /*   By: aelmsafe <aelmsafe@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 10:49:46 by aelmsafe          #+#    #+#             */
-/*   Updated: 2025/05/21 10:55:14 by aelmsafe         ###   ########.fr       */
+/*   Updated: 2025/07/04 22:02:14 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <readline/history.h>
 # include "libft/libft.h"
 # include "execution/include/execution.h"
+# include <sys/wait.h>
 
 //	List that for every node, contains the variable name in `name`,
 //	along with the corresponding value stored in `value`.
@@ -122,6 +123,9 @@ void			redirection_error(char c);
 
 // Temprary definition of the execution functions.
 
-void  start_execution(t_cmd *cmd, char **env);
+int  	start_execution(t_cmd *cmd, char **env, char **path);
+char	*get_path(char *cmd, char **path);
+t_export	*ft_new_node(char *s, char *str);
+void	add_last(t_export **s, t_export *t);
 
 #endif /* MINISHELL_H */
