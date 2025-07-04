@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aelmsafe <aelmsafe@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 18:38:40 by aelmsafe          #+#    #+#             */
-/*   Updated: 2025/04/22 19:47:40 by aelmsafe         ###   ########.fr       */
+/*   Updated: 2025/07/04 17:15:29 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ char	*read_func(void)
 	return (line);
 }
 
-int	main(int ac, char **av, char **env)
+int	main(int ac, char **av)
 {
 	struct sigaction	sa_int;
 	struct sigaction	sa_quit;
 	char				*cl;
-	t_cmd				*cmd;
+	// t_cmd				*cmd;
 
 	(void)ac;
 	(void)av;
@@ -40,9 +40,9 @@ int	main(int ac, char **av, char **env)
 			sigaction_exit();
 		cl = read_func();
 		add_history(cl);
-		cmd = parser(cl);
-		fork();
-		start_execution(cmd, env);
+		// cmd = parser(cl);
+		// fork();
+		// start_execution(cmd, env);
 		free(cl);
 	}
 	rl_clear_history();
