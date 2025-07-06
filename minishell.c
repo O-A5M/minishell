@@ -6,7 +6,7 @@
 /*   By: aelmsafe <aelmsafe@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 18:38:40 by aelmsafe          #+#    #+#             */
-/*   Updated: 2025/07/04 22:09:27 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/06 12:33:26 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,19 @@ char	*read_func(void)
 	return (line);
 }
 
+void	free_array(char **arr)
+{
+	int	i;
+
+	i = 0;
+	while (arr[i])
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
+}
+
 t_export	*split_env(char **env)
 {
 	t_export	*ret;
@@ -31,12 +44,14 @@ t_export	*split_env(char **env)
 	int		i;
 
 	i = 0;
+	ret = NULL;
 	while (env[i])
 	{
 		splits = ft_split(env[i], '=');
 		add_last(&ret, ft_new_node(splits[0], splits[1]));
 		i++;
 	}
+	free_array(splits);
 	return (ret);
 }
 
@@ -75,19 +90,22 @@ void	add_last(t_export **s, t_export *t)
 
 char	**split_path(t_export *export)
 {
-	char	**ret;
+	char		**ret;
+	t_export	*tmp;
 
-	while (export)
+	tmp = export;
+	while (tmp)
 	{
-		if (!ft_strncmp("PATH", export->name, 4))
+		if (!ft_strncmp("PATH", tmp->name, 4))
 		{
-			ret = ft_split(export->value, ':');
+			ret = ft_split(tmp->value, ':');
 			// if (!ret)
-				//exit_status;
+				//exit_status; TODO
 			return (ret);
 		}
-		export = export->next;
+		tmp = tmp->next;
 	}
+	// free_env(&export);
 	return (NULL);
 }
 
@@ -105,7 +123,7 @@ int	main(int ac, char **av, char **env)
 	set_signals(&sa_int, &sa_quit);
 	while (1337)
 	{
-		if (sigaction(SIGINT, &sa_int, NULL) == -1
+	if (sigaction(SIGINT, &sa_int, NULL) == -1
 			|| sigaction(SIGQUIT, &sa_quit, NULL) == -1)
 			sigaction_exit();
 		cl = read_func();
