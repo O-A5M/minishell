@@ -14,73 +14,96 @@
 
 //	The expansion case will need to be handled separately
 //		as it can only be concluded after making the expansion.
-void	quote_found(char *cl, unsigned int *index,
-		t_cmd **cmd_head)
+int	quote_found(char *cl, unsigned int *index, t_cmd **cmd_head)
 {
 	char	*arg;
 	int		done_arg;
 
 	arg = get_quoted_token(cl, index);
+	if (arg == NULL)
+		return (-1);
 	if (is_a_pipe(cl[*index]) || is_a_redir(cl[*index])
-		|| is_a_whitespace(cl[*index]))
+		|| is_a_whitespace(cl[*index]) || !cl[*index])
 		done_arg = 1;
 	else
 		done_arg = 0;
 	append_arg(&(((*cmd_head)->last_node)->args_list), arg, done_arg);
+	return (0);
 }
 
-void	expansion_found(char *cl, unsigned int *index,
-		t_cmd **cmd_head)
+int	expansion_found(char *cl, unsigned int *index, t_cmd **cmd_head)
 {
 	char	*arg;
 	int		done_arg;
 
-	arg = expand_token(cl, index);
+	arg = get_expanded_token(cl, index);
+	if (arg == NULL)
+		return (-1);
 	if (is_a_pipe(cl[*index]) || is_a_redir(cl[*index])
 		|| is_a_whitespace(cl[*index]))
 		done_arg = 1;
 	else
 		done_arg = 0;
 	append_arg(&(((*cmd_head)->last_node)->args_list), arg, done_arg);
+	return (0);
 }
 
 // free_args_list();
-void	pipe_found(char *cl, unsigned int *index,
-		t_cmd **cmd_head)
+int	pipe_found(char *cl, unsigned int *index, t_cmd **cmd_head)
 {
 	*index += 1;
 	while (is_a_whitespace(cl[*index]))
 		*index += 1;
 	if (cl[*index] == '\0' || is_a_pipe(cl[*index]))
+	{
 		pipe_error();
-	(*cmd_head)->last_node->args_array = list_to_arr((*cmd_head)->last_node->args_list);
+		return (-1);
+	}
+	(*cmd_head)->last_node->args_array
+		= list_to_arr((*cmd_head)->last_node->args_list);
 	append_command(cmd_head, NULL, NULL, NULL);
+	return (0);
 }
 
-void	redir_found(char *cl, unsigned int *index,
-		t_cmd **cmd_head)
+// when filename is an empty string, this function treats it
+// as a correct filename. would need to treat that when at execution.
+int	redir_found(char *cl, unsigned int *index, t_cmd **cmd_head)
 {
 	t_redir_type	redir_type;
+	char			*token;
 	char			*filename;
 
 	filename = NULL;
 	redir_type = what_redirection_type(cl, index);
-	if (is_a_quote(cl[*index]))
-		filename = get_quoted_token(cl, index);
-	else if (is_an_expansion(cl[*index]))
-		filename = expand_token(cl, index);
-	else if (is_other(cl[*index]))
-		filename = get_normal_token(cl, index);
+	if (redir_type == 13)
+		return (-1);
+	while (is_other(cl[*index]) || is_a_quote(cl[*index]) || cl[*index] == '$')
+	{
+		if (is_a_quote(cl[*index]))
+			token = get_quoted_token(cl, index);
+		else if (cl[*index] == '$')
+			token = get_expanded_token(cl, index);
+		else if (is_other(cl[*index]))
+			token = get_normal_token(cl, index);
+		if (token == NULL)
+		{
+			free(filename);
+			return (-1);
+		}
+		filename = add_text(token, filename);
+	}
 	append_redir(*cmd_head, redir_type, filename);
+	return (0);
 }
 
-void	other_found(char *cl, unsigned int *index,
-		t_cmd **cmd_head)
+int	other_found(char *cl, unsigned int *index, t_cmd **cmd_head)
 {
 	char	*arg;
 	int		done_arg;
 
 	arg = get_normal_token(cl, index);
+	if (arg == NULL)
+		return (-1);
 	if (is_a_pipe(cl[*index]) || is_a_redir(cl[*index])
 		|| is_a_whitespace(cl[*index]) || cl[*index] == '\0')
 	{
@@ -91,4 +114,5 @@ void	other_found(char *cl, unsigned int *index,
 		done_arg = 0;
 	}
 	append_arg(&(((*cmd_head)->last_node)->args_list), arg, done_arg);
+	return (0);
 }
