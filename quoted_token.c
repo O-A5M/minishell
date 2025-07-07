@@ -46,7 +46,8 @@ char	*expand_quoted_text(char *quoted_text)
 		expanded_quoted_text = add_text(ft_substr(quoted_text, start_index,
 					index - start_index), expanded_quoted_text);
 		if (quoted_text[index] != '\0')
-			expanded_quoted_text = add_text(expand_token(quoted_text, &index),
+			expanded_quoted_text
+				= add_text(get_expanded_token(quoted_text, &index),
 					expanded_quoted_text);
 	}
 	if (expanded_quoted_text == NULL)
@@ -67,7 +68,10 @@ char	*get_quoted_token(char *cl, unsigned int *index)
 	while (cl[*index] != '\0' && cl[*index] != quote_sign)
 		*index += 1;
 	if (cl[*index] == '\0')
+	{
 		unclosed_quotes_error();
+		return (NULL);
+	}
 	quoted_text = ft_substr(cl, start_index, *index - start_index);
 	*index += 1;
 	if (quote_sign == '"')
