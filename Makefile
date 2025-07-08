@@ -4,6 +4,7 @@ CFLAGS = -g -Wall -Wextra -Werror
 # Minishell variables
 
 MINISHELL_SRC_FILES = minishell.c signal.c parser.c exit.c\
+					  manage_env_list.c\
 					  expansion_token.c argument_triggered.c\
 					  other_token.c quoted_token.c struct_functions_1.c\
 					  struct_functions_2.c struct_functions_3.c\

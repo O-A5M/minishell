@@ -6,7 +6,7 @@
 /*   By: oakhmouc <oakhmouc@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 11:07:13 by oakhmouc          #+#    #+#             */
-/*   Updated: 2025/07/07 17:16:29 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/08 18:12:33 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,11 @@ int	find_command(char **path, char *s)
 	{
 		str = ft_strjoin(path[i], s);
 		if (access(str, X_OK) == 0)
+		{
+			free (str);
 			return (i);
+		}
+		free (str);
 		i++;
 	}
 	return (-1);
