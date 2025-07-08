@@ -6,7 +6,7 @@
 /*   By: aelmsafe <aelmsafe@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 18:38:40 by aelmsafe          #+#    #+#             */
-/*   Updated: 2025/07/06 12:33:26 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/07 17:18:01 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ char	**split_path(t_export *export)
 		}
 		tmp = tmp->next;
 	}
-	// free_env(&export);
+	free_env(&export);
 	return (NULL);
 }
 
