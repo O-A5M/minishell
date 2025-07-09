@@ -19,7 +19,6 @@ char	*read_func(t_cmd **command)
 	line = readline("ZimBomBah$ ");
 	if (line == NULL)
 	{
-		rl_clear_history();
 		endoffile(command);
 	}
 	return (line);
