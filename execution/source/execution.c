@@ -6,7 +6,7 @@
 /*   By: oakhmouc <oakhmouc@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 18:53:51 by oakhmouc          #+#    #+#             */
-/*   Updated: 2025/07/08 18:12:33 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/10 21:11:54 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-int	start_execution(t_cmd *cmd, char **env, char **path)
+int	simple_command(t_cmd *cmd, char **env, char **path)
 {
 	pid_t	child_pid;
 	int		i;
@@ -47,5 +47,17 @@ int	start_execution(t_cmd *cmd, char **env, char **path)
 		free(cd);
 		return (1);
 	}
+	return (0);
+}
+
+int	pipe_line(t_cmd *cmd, char **env, char **path)
+{
+
+	return (0);
+}
+
+int	start_execution(t_cmd *cmd, char **env, char **path)
+{
+	simple_command(cmd, env, path);
 	return (0);
 }
