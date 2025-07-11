@@ -6,7 +6,7 @@
 /*   By: oakhmouc <oakhmouc@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 18:53:51 by oakhmouc          #+#    #+#             */
-/*   Updated: 2025/07/10 21:11:54 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/11 19:54:26 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ int	simple_command(t_cmd *cmd, char **env, char **path)
 		path_cmd = ft_strjoin(path[i], cd);
 		child_pid = fork ();
 		if (child_pid < 0)
-			return (1);
+			return (TECHNICAL_ERR);
 		else if (child_pid == 0)
 		{
-			execve(path_cmd, cmd->args_array, env);
-			exit (0);
+			if (execve(path_cmd, cmd->args_array, env) == -1)
+				return (TECHNICAL_ERR);
 		}
 		else if (i >= 0)
 			waitpid(child_pid, &status, 0);
@@ -45,19 +45,18 @@ int	simple_command(t_cmd *cmd, char **env, char **path)
 	else
 	{
 		free(cd);
-		return (1);
+		return (CMD_N_FOUND);
 	}
-	return (0);
+	return (SUCCES);
 }
 
 int	pipe_line(t_cmd *cmd, char **env, char **path)
 {
-
-	return (0);
+	return (SUCCES);
 }
 
 int	start_execution(t_cmd *cmd, char **env, char **path)
 {
 	simple_command(cmd, env, path);
-	return (0);
+	return (SUCCES);
 }

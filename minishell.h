@@ -6,7 +6,7 @@
 /*   By: aelmsafe <aelmsafe@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 10:49:46 by aelmsafe          #+#    #+#             */
-/*   Updated: 2025/07/10 18:33:54 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/11 19:54:26 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@
 # include <readline/history.h>
 # include "libft/libft.h"
 # include <sys/wait.h>
+# define SUCCES 0
+# define TECHNICAL_ERR 1
+# define CMD_N_FOUND 127
 
 //	List that for every node, contains the variable name in `name`,
 //	along with the corresponding value stored in `value`.
