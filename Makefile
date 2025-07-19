@@ -10,7 +10,7 @@ MINISHELL_SRC_FILES = minishell.c signal.c parser.c exit.c\
 					  struct_functions_2.c struct_functions_3.c\
 					  token_type_functions_1.c token_type_functions_2.c\
 					  execution/source/execution.c execution/source/execution_utils.c\
-					  environment/set_env.c
+					  environment/set_env.c execution/source/pipe_line.c
 MINISHELL_OBJ_FILES = $(MINISHELL_SRC_FILES:.c=.o)
 NAME = minishell
 

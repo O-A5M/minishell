@@ -6,12 +6,11 @@
 /*   By: aelmsafe <aelmsafe@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 18:38:40 by aelmsafe          #+#    #+#             */
-/*   Updated: 2025/07/08 18:36:48 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/19 14:01:28 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "execution/include/execution.h"
 #include "libft/libft.h"
 
 char	*read_func(void)
@@ -30,7 +29,7 @@ int	main(int ac, char **av, char **env)
 	struct sigaction	sa_quit;
 	char				*cl;
 	t_cmd				*cmd;
-	char				**path;
+	char				**m_env;
 
 	(void)ac;
 	(void)av;
@@ -40,11 +39,11 @@ int	main(int ac, char **av, char **env)
 	if (sigaction(SIGINT, &sa_int, NULL) == -1
 			|| sigaction(SIGQUIT, &sa_quit, NULL) == -1)
 			sigaction_exit();
-		path = split_path(split_env(env));
 		cl = read_func();
 		add_history(cl);
 		cmd = parser(cl);
-		start_execution(cmd, env, path);
+		m_env = envdup(env);
+		start_execution(cmd, m_env);
 		free(cl);
 	}
 	rl_clear_history();

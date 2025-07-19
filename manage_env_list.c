@@ -6,30 +6,33 @@
 /*   By: oakhmouc <oakhmouc@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 18:15:37 by oakhmouc          #+#    #+#             */
-/*   Updated: 2025/07/08 18:37:26 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/19 16:32:05 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**split_path(t_export *export)
+char	**split_path(char **env)
 {
 	char		**ret;
-	t_export	*tmp;
+	char		**tmp1;
+	char		*tmp2;
+	int			index;
 
-	tmp = export;
-	while (tmp)
+	index = 0;
+	tmp2 = NULL;
+	while (env[index])
 	{
-		if (!ft_strncmp("PATH", tmp->name, 4))
+		if ((tmp2 = ft_strnstr(env[index], "PATH", 4)))
 		{
-			ret = ft_split(tmp->value, ':');
-			// if (!ret)
-				//exit_status; TODO
+			tmp1 = ft_split(tmp2, '=');
+			ret = ft_split(tmp1[1], ':');
+			free_array(tmp1);
+			free(tmp2);
 			return (ret);
 		}
-		tmp = tmp->next;
+		index++;
 	}
-	free_env(&export);
 	return (NULL);
 }
 

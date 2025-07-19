@@ -6,7 +6,7 @@
 /*   By: oakhmouc <oakhmouc@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:15:46 by oakhmouc          #+#    #+#             */
-/*   Updated: 2025/07/18 18:45:31 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/19 16:32:05 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,25 @@ void	free_env(t_export **export)
 		free (*export);
 		*export = tmp;
 	}
+}
+
+char	**envdup(char **env)
+{
+	int		len;
+	char	**ret;
+
+	len = 0;
+	while (env[len])
+		len++;
+	ret = malloc((len + 1) * sizeof(char *));
+	if (!ret)
+		return (NULL);
+	len = 0;
+	while (env[len])
+	{
+		ret[len] = ft_strdup(env[len]);
+		len++;
+	}
+	ret[len] = NULL;
+	return (ret);
 }

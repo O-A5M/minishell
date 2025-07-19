@@ -6,7 +6,7 @@
 /*   By: aelmsafe <aelmsafe@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 10:49:46 by aelmsafe          #+#    #+#             */
-/*   Updated: 2025/07/18 18:44:20 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/19 16:41:50 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,18 +124,21 @@ void			redirection_error(char c);
 
 // Temprary definition of the execution functions.
 
-int  		start_execution(t_cmd *cmd, char **env, char **path);
+int  		start_execution(t_cmd *cmd, char **m_env);
 char		*get_path(char *cmd, char **path);
 t_export	*ft_new_node(char *s, char *str);
 void		add_last(t_export **s, t_export *t);
 int			find_command(char **path, char *s);
 void		free_env(t_export **expot);
-char		**split_path(t_export *expot);
+char		**split_path(char **m_env);
 void		free_array(char	**arr);
 t_export	*ft_new_node(char *name, char *value);
 void		add_last(t_export **s, t_export *t);
 t_export	*split_env(char **env);
 int			simple_command(t_cmd *cmd, char **env, char **path);
 t_export	*set_env(char **env);
+char		**envdup(char **env);
+char		*search_command(t_cmd *cmd, char **path);
+int			pipe_line(t_cmd *cmd, char **env, char **path);
 
 #endif /* MINISHELL_H */
