@@ -6,7 +6,7 @@
 /*   By: oakhmouc <oakhmouc@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 18:53:51 by oakhmouc          #+#    #+#             */
-/*   Updated: 2025/07/12 06:38:52 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/18 18:48:03 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,13 +124,14 @@ int	pipe_line(t_cmd *cmd, char **env, char **path)
 			has_prev = 0;
 		cmd = cmd->next;
 	}
-	while (wait(NULL) > 0)
-		;
+	while (wait(NULL) > 0);
 	return (SUCCES);
 }
 
 int	start_execution(t_cmd *cmd, char **env, char **path)
 {
+	if (!cmd->args_array[0])
+		return (SUCCES);
 	if (cmd->next)
 		pipe_line(cmd, env, path);
 	else

@@ -6,7 +6,7 @@
 /*   By: oakhmouc <oakhmouc@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 11:07:13 by oakhmouc          #+#    #+#             */
-/*   Updated: 2025/07/08 18:12:33 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/18 18:33:34 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,3 @@ int	find_command(char **path, char *s)
 	return (-1);
 }
 
-void	free_env(t_export **export)
-{
-	t_export	*tmp;
-
-	tmp = *export;
-	while (tmp)
-	{
-		free (tmp->name);
-		free (tmp->value);
-		tmp = tmp->next;
-	}
-	free(*export);
-}

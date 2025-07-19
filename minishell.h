@@ -6,7 +6,7 @@
 /*   By: aelmsafe <aelmsafe@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 10:49:46 by aelmsafe          #+#    #+#             */
-/*   Updated: 2025/07/11 19:54:26 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/18 18:44:20 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,7 @@ void		free_array(char	**arr);
 t_export	*ft_new_node(char *name, char *value);
 void		add_last(t_export **s, t_export *t);
 t_export	*split_env(char **env);
-int	simple_command(t_cmd *cmd, char **env, char **path);
+int			simple_command(t_cmd *cmd, char **env, char **path);
+t_export	*set_env(char **env);
 
 #endif /* MINISHELL_H */
