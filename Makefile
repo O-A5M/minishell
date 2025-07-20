@@ -39,6 +39,8 @@ fclean: clean
 
 re: fclean $(NAME)
 
+do: all clean
+
 # Extra rules
 
 .PHONY: clean

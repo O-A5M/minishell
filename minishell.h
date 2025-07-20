@@ -6,7 +6,7 @@
 /*   By: aelmsafe <aelmsafe@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 10:49:46 by aelmsafe          #+#    #+#             */
-/*   Updated: 2025/07/19 16:41:50 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/20 18:33:01 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdlib.h>
 # include <signal.h>
 # include <unistd.h>
+# include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "libft/libft.h"
@@ -140,5 +141,6 @@ t_export	*set_env(char **env);
 char		**envdup(char **env);
 char		*search_command(t_cmd *cmd, char **path);
 int			pipe_line(t_cmd *cmd, char **env, char **path);
+int			redirection_case(t_cmd *cmd, char *cmd_ret, char **env);
 
 #endif /* MINISHELL_H */

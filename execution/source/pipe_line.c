@@ -6,7 +6,7 @@
 /*   By: oakhmouc <oakhmouc@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 15:53:10 by oakhmouc          #+#    #+#             */
-/*   Updated: 2025/07/20 16:52:34 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/20 18:34:09 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ int	pipe_line(t_cmd *cmd, char **env, char **path)
 		else if (pid == 0)
 		{
 			child_work(prev_fd, fd, cmd);
-			execve(cmd_ret, cmd->args_array, env);
-			return (TECHNICAL_ERR);
+			if (redirection_case(cmd, cmd_ret, env) != SUCCES)
+				return (TECHNICAL_ERR);
 		}
 		free (cmd_ret);
 		parent_work(&prev_fd, fd, cmd);

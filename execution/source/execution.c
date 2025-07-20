@@ -6,16 +6,57 @@
 /*   By: oakhmouc <oakhmouc@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 18:53:51 by oakhmouc          #+#    #+#             */
-/*   Updated: 2025/07/19 16:46:22 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/20 18:29:27 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include <fcntl.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <time.h>
 #include <unistd.h>
+
+int	handle_fd(t_redir_list *redir)
+{
+	int	fd;
+
+	fd = -1;
+	if (redir->redir_type == REDIR_OUT)
+	{
+		if ((fd = open(redir->filename, O_CREAT | O_RDWR | O_TRUNC
+				 , 0644)) != -1)
+			dup2(fd, STDOUT_FILENO);
+	}
+	else if (redir->redir_type == REDIR_IN)
+	{
+		if ((fd = open(redir->filename, O_RDONLY, 0644)) != -1)
+			dup2(fd, STDIN_FILENO);
+	}
+	else if (redir->redir_type == APPEND)
+	{
+		if ((fd = open(redir->filename, O_CREAT | O_APPEND | O_RDWR
+				 , 0644)) != -1)
+			dup2(fd, STDOUT_FILENO);
+	}
+	if (fd == -1)
+		return (TECHNICAL_ERR);
+	close(fd);
+	return (SUCCES);
+}
+
+int	redirection_case(t_cmd *cmd, char *cmd_ret, char **env)
+{
+	while (cmd->redirections)
+	{
+		if (handle_fd(cmd->redirections) != SUCCES)
+			return (TECHNICAL_ERR);
+		cmd->redirections = cmd->redirections->next;
+	}
+	execve(cmd_ret, cmd->args_array, env);
+	return (TECHNICAL_ERR);
+}
 
 int	simple_command(t_cmd *cmd, char **env, char **path)
 {
@@ -32,7 +73,7 @@ int	simple_command(t_cmd *cmd, char **env, char **path)
 			return (TECHNICAL_ERR);
 		else if (child_pid == 0)
 		{
-			if (execve(ret_cmd, cmd->args_array, env) == -1)
+			if (redirection_case(cmd, ret_cmd, env) == TECHNICAL_ERR)
 				return (TECHNICAL_ERR);
 		}
 		else if (i >= 0)
