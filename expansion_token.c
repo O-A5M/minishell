@@ -6,7 +6,7 @@
 /*   By: aelmsafe <aelmsafe@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 12:36:14 by aelmsafe          #+#    #+#             */
-/*   Updated: 2025/07/04 17:21:15 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/22 16:56:03 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*valid_token_expansion(char *cl, unsigned int *index)
 	expanded_variable = ft_strdup(getenv(variable_name));
 	free(variable_name);
 	if (expanded_variable == NULL)
-		expanded_variable = ft_strdup("");
+		expanded_variable = NULL;
 	return (expanded_variable);
 }
 

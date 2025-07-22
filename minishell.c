@@ -6,7 +6,7 @@
 /*   By: aelmsafe <aelmsafe@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 18:38:40 by aelmsafe          #+#    #+#             */
-/*   Updated: 2025/07/19 14:01:28 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/22 18:33:54 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	main(int ac, char **av, char **env)
 		cl = read_func();
 		add_history(cl);
 		cmd = parser(cl);
-		m_env = envdup(env);
+		m_env = envdup(env, NULL);
 		start_execution(cmd, m_env);
 		free(cl);
 	}

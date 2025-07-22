@@ -6,17 +6,11 @@
 /*   By: oakhmouc <oakhmouc@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 18:53:51 by oakhmouc          #+#    #+#             */
-/*   Updated: 2025/07/20 18:29:27 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/22 18:08:19 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include <fcntl.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <time.h>
-#include <unistd.h>
 
 int	handle_fd(t_redir_list *redir)
 {
@@ -90,6 +84,8 @@ int	start_execution(t_cmd *cmd, char **m_env)
 	char	**path;
 
 	if (!cmd->args_array[0])
+		return (SUCCES);
+	if (!handle_built_ins(cmd, m_env))
 		return (SUCCES);
 	path = split_path(m_env);
 	if (cmd->next)

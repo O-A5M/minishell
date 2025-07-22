@@ -1,10 +1,14 @@
 #include "../minishell.h"
 
-void	env_command(t_export *list)
+int	ft_env(char **env)
 {
-	while (list)
+	int	index;
+
+	index = 0;
+	while (env[index])
 	{
-		printf("%s=%s\n", list->name, list->value);
-		list = list->next;
+		printf("%s\n", env[index]);
+		index++;
 	}
+	return (SUCCES);
 }
