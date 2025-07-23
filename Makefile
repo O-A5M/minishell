@@ -44,6 +44,7 @@ fclean: clean
 re: fclean $(NAME)
 
 do: all clean
+	clear
 
 # Extra rules
 

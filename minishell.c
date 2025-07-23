@@ -6,12 +6,11 @@
 /*   By: aelmsafe <aelmsafe@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 18:38:40 by aelmsafe          #+#    #+#             */
-/*   Updated: 2025/07/22 18:33:54 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/23 17:01:29 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "libft/libft.h"
 
 char	*read_func(void)
 {

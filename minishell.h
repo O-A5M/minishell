@@ -6,7 +6,7 @@
 /*   By: aelmsafe <aelmsafe@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 10:49:46 by aelmsafe          #+#    #+#             */
-/*   Updated: 2025/07/22 19:00:26 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/23 17:01:29 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,9 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }			t_cmd;
 
-//	All the necessary function prototypes for our unique minishell project.
+//	All the necessary function prototypes for our unique minishell project
+//	in the parsing part.
+
 char			*read_func(void);
 t_cmd			*parser(char *cl);
 void			set_signals(struct sigaction *sa_int,
@@ -123,7 +125,7 @@ void			append_redir(t_cmd *cmd_head, t_redir_type redir_type,
 void			unclosed_quotes_error(void);
 void			redirection_error(char c);
 
-// Temprary definition of the execution functions.
+// Definition of the execution functions.
 
 int  		start_execution(t_cmd *cmd, char **m_env);
 char		*get_path(char *cmd, char **path);
@@ -146,7 +148,7 @@ int			ft_cd(t_cmd *cmd);
 int			handle_built_ins(t_cmd *cmd, char **env);
 int			ft_echo(t_cmd *cmd);
 int			ft_pwd(void);
-int			ft_export(t_cmd *cmd, char ***env);
+int			ft_export(t_cmd *cmd, char **env);
 int			ft_unset(t_cmd *cmd);
 int			ft_env(char **env);
 int			ft_exit(t_cmd *cmd);
