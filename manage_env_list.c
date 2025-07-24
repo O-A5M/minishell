@@ -6,7 +6,7 @@
 /*   By: oakhmouc <oakhmouc@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 18:15:37 by oakhmouc          #+#    #+#             */
-/*   Updated: 2025/07/22 18:28:09 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/24 16:08:58 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ char	**split_path(char **env)
 			tmp1 = ft_split(tmp2, '=');
 			ret = ft_split(tmp1[1], ':');
 			free_array(tmp1);
-			free(tmp2);
 			return (ret);
 		}
 		index++;
@@ -49,52 +48,17 @@ void	free_array(char **arr)
 	free(arr);
 }
 
-t_export	*ft_new_node(char *s, char *str)
+
+char	*ft_getenv(char *name, char **env)
 {
-	t_export	*ret;
+	char	*var;
+	char	**tmp;
 
-	ret = malloc(sizeof(t_export));
-	if (!ret)
-		return (NULL);
-	ret->name = s;
-	ret->value = str;
-	ret->next = NULL;
-	return (ret);
-}
-
-void	add_last(t_export **s, t_export *t)
-{
-	t_export	*tmp;
-
-	if (!s || !t)
-		return ;
-	if (!*s)
-	{
-		(*s) = t;
-	}
-	else
-	{
-		tmp = *s;
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = t;
-	}
-}
-
-t_export	*split_env(char **env)
-{
-	t_export	*ret;
-	char		**splits;
-	int		i;
-
-	i = 0;
-	ret = NULL;
-	while (env[i])
-	{
-		splits = ft_split(env[i], '=');
-		add_last(&ret, ft_new_node(splits[0], splits[1]));
-		i++;
-	}
-	free_array(splits);
-	return (ret);
+	// if (name && name[0] == '?' && name[1] == '\0')
+	// 	return (exit_status());
+	tmp = __environ;
+	__environ = env;
+	var = getenv(name);
+	__environ = tmp;
+	return (var);
 }

@@ -6,11 +6,12 @@
 /*   By: aelmsafe <aelmsafe@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 18:38:40 by aelmsafe          #+#    #+#             */
-/*   Updated: 2025/07/23 17:01:29 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/24 17:33:51 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <stdio.h>
 
 char	*read_func(void)
 {
@@ -33,6 +34,7 @@ int	main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	set_signals(&sa_int, &sa_quit);
+	m_env = envdup(env, NULL);
 	while (1337)
 	{
 	if (sigaction(SIGINT, &sa_int, NULL) == -1
@@ -40,9 +42,8 @@ int	main(int ac, char **av, char **env)
 			sigaction_exit();
 		cl = read_func();
 		add_history(cl);
-		cmd = parser(cl);
-		m_env = envdup(env, NULL);
-		start_execution(cmd, m_env);
+		cmd = parser(cl, m_env);
+		start_execution(cmd, &m_env);
 		free(cl);
 	}
 	rl_clear_history();

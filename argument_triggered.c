@@ -6,7 +6,7 @@
 /*   By: aelmsafe <aelmsafe@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 00:39:38 by aelmsafe          #+#    #+#             */
-/*   Updated: 2025/06/16 00:39:40 by aelmsafe         ###   ########.fr       */
+/*   Updated: 2025/07/24 17:42:46 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 //	The expansion case will need to be handled separately
 //		as it can only be concluded after making the expansion.
 void	quote_found(char *cl, unsigned int *index,
-		t_cmd **cmd_head)
+		t_cmd **cmd_head, char **env)
 {
 	char	*arg;
 	int		done_arg;
 
-	arg = get_quoted_token(cl, index);
+	arg = get_quoted_token(cl, index, env);
 	if (is_a_pipe(cl[*index]) || is_a_redir(cl[*index])
 		|| is_a_whitespace(cl[*index]))
 		done_arg = 1;
@@ -30,12 +30,12 @@ void	quote_found(char *cl, unsigned int *index,
 }
 
 void	expansion_found(char *cl, unsigned int *index,
-		t_cmd **cmd_head)
+		t_cmd **cmd_head, char **env)
 {
 	char	*arg;
 	int		done_arg;
 
-	arg = expand_token(cl, index);
+	arg = expand_token(cl, index, env);
 	if (is_a_pipe(cl[*index]) || is_a_redir(cl[*index])
 		|| is_a_whitespace(cl[*index]))
 		done_arg = 1;
@@ -58,7 +58,7 @@ void	pipe_found(char *cl, unsigned int *index,
 }
 
 void	redir_found(char *cl, unsigned int *index,
-		t_cmd **cmd_head)
+		t_cmd **cmd_head, char **env)
 {
 	t_redir_type	redir_type;
 	char			*filename;
@@ -66,9 +66,9 @@ void	redir_found(char *cl, unsigned int *index,
 	filename = NULL;
 	redir_type = what_redirection_type(cl, index);
 	if (is_a_quote(cl[*index]))
-		filename = get_quoted_token(cl, index);
+		filename = get_quoted_token(cl, index, env);
 	else if (is_an_expansion(cl[*index]))
-		filename = expand_token(cl, index);
+		filename = expand_token(cl, index, env);
 	else if (is_other(cl[*index]))
 		filename = get_normal_token(cl, index);
 	append_redir(*cmd_head, redir_type, filename);

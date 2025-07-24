@@ -6,7 +6,7 @@
 /*   By: aelmsafe <aelmsafe@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:53:50 by aelmsafe          #+#    #+#             */
-/*   Updated: 2025/06/18 18:53:51 by aelmsafe         ###   ########.fr       */
+/*   Updated: 2025/07/24 17:42:46 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	print_all(t_cmd *command)
 	}
 }
 
-t_cmd	*parser(char *cl)
+t_cmd	*parser(char *cl, char **env)
 {
 	t_cmd			*command;
 	unsigned int	index;
@@ -67,13 +67,13 @@ t_cmd	*parser(char *cl)
 		if (is_other(cl[index]))
 			other_found(cl, &index, &command);
 		if (is_a_quote(cl[index]))
-			quote_found(cl, &index, &command);
+			quote_found(cl, &index, &command, env);
 		if (is_an_expansion(cl[index]))
-			expansion_found(cl, &index, &command);
+			expansion_found(cl, &index, &command, env);
 		if (is_a_pipe(cl[index]))
 			pipe_found(cl, &index, &command);
 		if (is_a_redir(cl[index]))
-			redir_found(cl, &index, &command);
+			redir_found(cl, &index, &command, env);
 	}
 	(command->last_node)->args_array
 		= list_to_arr((command->last_node)->args_list);

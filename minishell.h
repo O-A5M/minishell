@@ -6,7 +6,7 @@
 /*   By: aelmsafe <aelmsafe@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 10:49:46 by aelmsafe          #+#    #+#             */
-/*   Updated: 2025/07/23 17:01:29 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/24 17:42:46 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ typedef struct s_cmd
 //	in the parsing part.
 
 char			*read_func(void);
-t_cmd			*parser(char *cl);
+t_cmd			*parser(char *cl, char **env);
 void			set_signals(struct sigaction *sa_int,
 					struct sigaction *sa_quit);
 void			handle_signal(int signum);
@@ -93,21 +93,22 @@ int				is_an_expansion(char c);
 int				is_a_quote(char c);
 int				is_other(char c);
 void			quote_found(char *cl, unsigned int *index,
-					t_cmd **command);
+					t_cmd **command, char **env);
 void			pipe_found(char *cl, unsigned int *index,
 					t_cmd **command);
 void			redir_found(char *cl, unsigned int *index,
-					t_cmd **command);
+					t_cmd **command, char **env);
 void			expansion_found(char *cl, unsigned int *index,
-					t_cmd **command);
+					t_cmd **command, char **env);
 void			other_found(char *cl, unsigned int *index,
 					t_cmd **command);
 char			*get_normal_token(char *cl, unsigned int *index);
 char			*add_text(char *text_chunk, char *dst);
-char			*valid_token_expansion(char *cl, unsigned int *index);
-char			*expand_token(char *cl, unsigned int *index);
-char			*expand_quoted_text(char *quoted_text);
-char			*get_quoted_token(char *cl, unsigned int *index);
+char			*valid_token_expansion(char *cl, unsigned int *index, 
+					char **env);
+char			*expand_token(char *cl, unsigned int *index, char **env);
+char			*expand_quoted_text(char *quoted_text, char **env);
+char			*get_quoted_token(char *cl, unsigned int *index, char **env);
 void			pipe_error(void);
 void			allocation_error(void);
 t_cmd			*create_command(char **args_array, t_args *args_list,
@@ -127,7 +128,7 @@ void			redirection_error(char c);
 
 // Definition of the execution functions.
 
-int  		start_execution(t_cmd *cmd, char **m_env);
+int  		start_execution(t_cmd *cmd, char ***m_env);
 char		*get_path(char *cmd, char **path);
 t_export	*ft_new_node(char *s, char *str);
 void		add_last(t_export **s, t_export *t);
@@ -144,13 +145,14 @@ char		**envdup(char **env, char *var);
 char		*search_command(t_cmd *cmd, char **path);
 int			pipe_line(t_cmd *cmd, char **env, char **path);
 int			redirection_case(t_cmd *cmd, char *cmd_ret, char **env);
-int			ft_cd(t_cmd *cmd);
-int			handle_built_ins(t_cmd *cmd, char **env);
+int			ft_cd(t_cmd *cmd, char **env);
+int			handle_built_ins(t_cmd *cmd, char ***env);
 int			ft_echo(t_cmd *cmd);
 int			ft_pwd(void);
-int			ft_export(t_cmd *cmd, char **env);
+int			ft_export(t_cmd *cmd, char ***env);
 int			ft_unset(t_cmd *cmd);
 int			ft_env(char **env);
 int			ft_exit(t_cmd *cmd);
+char		*ft_getenv(char *name, char **env);
 
 #endif /* MINISHELL_H */
