@@ -6,7 +6,7 @@
 /*   By: oakhmouc <oakhmouc@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 18:53:51 by oakhmouc          #+#    #+#             */
-/*   Updated: 2025/07/25 19:22:48 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/25 20:03:50 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ int	simple_command(t_cmd *cmd, char **env, char **path)
 		return (TECHNICAL_ERR);
 	else if (child_pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		if (redirection_case(cmd, env, path) == TECHNICAL_ERR)
 			exit (TECHNICAL_ERR);
 		exit (SUCCES);
