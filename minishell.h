@@ -6,7 +6,7 @@
 /*   By: aelmsafe <aelmsafe@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 10:49:46 by aelmsafe          #+#    #+#             */
-/*   Updated: 2025/07/25 18:33:21 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/25 19:35:27 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@
 # define SUCCES 0
 # define TECHNICAL_ERR 1
 # define CMD_N_FOUND 127
+
+extern int	return_status;
 
 //	List that for every node, contains the variable name in `name`,
 //	along with the corresponding value stored in `value`.

@@ -6,11 +6,12 @@
 /*   By: aelmsafe <aelmsafe@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:59:30 by aelmsafe          #+#    #+#             */
-/*   Updated: 2025/05/16 11:59:32 by aelmsafe         ###   ########.fr       */
+/*   Updated: 2025/07/25 19:31:59 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <sys/wait.h>
 
 void	handle_signal(int signum)
 {

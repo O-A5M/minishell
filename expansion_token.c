@@ -6,7 +6,7 @@
 /*   By: aelmsafe <aelmsafe@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 12:36:14 by aelmsafe          #+#    #+#             */
-/*   Updated: 2025/07/24 18:05:11 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/25 19:31:32 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char	*expand_token(char *cl, unsigned int *index, char **env)
 	else if (cl[*index] == '?')
 	{
 		*index += 1;
-		expanded_token = ft_itoa(EXIT_FAILURE);
+		expanded_token = ft_itoa(return_status);
 	}
 	else
 		expanded_token = ft_strdup("$");
