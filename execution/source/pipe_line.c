@@ -6,11 +6,12 @@
 /*   By: oakhmouc <oakhmouc@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 15:53:10 by oakhmouc          #+#    #+#             */
-/*   Updated: 2025/07/20 18:34:09 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/25 15:52:41 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include <stdlib.h>
 
 void	child_work(int prev_fd, int	*fd, t_cmd *cmd)
 {
@@ -57,7 +58,8 @@ int	pipe_line(t_cmd *cmd, char **env, char **path)
 		{
 			child_work(prev_fd, fd, cmd);
 			if (redirection_case(cmd, cmd_ret, env) != SUCCES)
-				return (TECHNICAL_ERR);
+				exit (TECHNICAL_ERR);
+			exit (SUCCES);
 		}
 		free (cmd_ret);
 		parent_work(&prev_fd, fd, cmd);

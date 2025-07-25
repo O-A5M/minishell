@@ -6,7 +6,7 @@
 /*   By: oakhmouc <oakhmouc@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 18:53:51 by oakhmouc          #+#    #+#             */
-/*   Updated: 2025/07/24 15:45:03 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/25 16:18:32 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ int	redirection_case(t_cmd *cmd, char *cmd_ret, char **env)
 			return (TECHNICAL_ERR);
 		cmd->redirections = cmd->redirections->next;
 	}
+	if (handle_built_ins(cmd, &env) == SUCCES)
+		return (SUCCES);
 	execve(cmd_ret, cmd->args_array, env);
 	return (TECHNICAL_ERR);
 }
@@ -70,7 +72,8 @@ int	simple_command(t_cmd *cmd, char **env, char **path)
 		else if (child_pid == 0)
 		{
 			if (redirection_case(cmd, ret_cmd, env) == TECHNICAL_ERR)
-				return (TECHNICAL_ERR);
+				exit (TECHNICAL_ERR);
+			exit (SUCCES);
 		}
 		else if (i >= 0)
 			wait(NULL);
@@ -87,8 +90,6 @@ int	start_execution(t_cmd *cmd, char ***m_env)
 
 	path = NULL;
 	if (!cmd->args_array[0])
-		return (SUCCES);
-	if (!handle_built_ins(cmd, m_env))
 		return (SUCCES);
 	path = split_path(*m_env);
 	if (cmd->next)
