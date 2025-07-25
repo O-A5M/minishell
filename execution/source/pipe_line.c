@@ -6,7 +6,7 @@
 /*   By: oakhmouc <oakhmouc@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 15:53:10 by oakhmouc          #+#    #+#             */
-/*   Updated: 2025/07/25 15:52:41 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/25 18:34:17 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ int	pipe_line(t_cmd *cmd, char **env, char **path)
 {
 	int		fd[2];
 	int		prev_fd;
-	char	*cmd_ret;
 	pid_t	pid;
 
 	prev_fd = -1;
@@ -51,17 +50,15 @@ int	pipe_line(t_cmd *cmd, char **env, char **path)
 	{
 		if (cmd->next && pipe(fd) == -1)
 			return (TECHNICAL_ERR);
-		cmd_ret = search_command(cmd, path);
 		if ((pid = fork()) == -1)
 			return (TECHNICAL_ERR);
 		else if (pid == 0)
 		{
 			child_work(prev_fd, fd, cmd);
-			if (redirection_case(cmd, cmd_ret, env) != SUCCES)
+			if (redirection_case(cmd, env, path) != SUCCES)
 				exit (TECHNICAL_ERR);
 			exit (SUCCES);
 		}
-		free (cmd_ret);
 		parent_work(&prev_fd, fd, cmd);
 		cmd = cmd->next;
 	}

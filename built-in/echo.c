@@ -1,4 +1,5 @@
 #include "../minishell.h"
+#include <unistd.h>
 
 int	ft_echo(t_cmd *cmd)
 {
@@ -7,6 +8,11 @@ int	ft_echo(t_cmd *cmd)
 
 	index = 1;
 	nl = 0;
+	if (!cmd->args_array[1])
+	{
+		write(1, "\n", 1);
+		return (SUCCES);
+	}
 	while (!ft_strncmp(cmd->args_array[index], "-n", 2))
 	{
 		index++;

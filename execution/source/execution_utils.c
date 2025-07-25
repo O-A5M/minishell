@@ -6,7 +6,7 @@
 /*   By: oakhmouc <oakhmouc@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 11:07:13 by oakhmouc          #+#    #+#             */
-/*   Updated: 2025/07/19 16:46:17 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/25 18:20:15 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ char	*search_command(t_cmd *cmd, char **path)
 	ret = NULL;
 	tmp = NULL;
 	index = -1;
+	if (!cmd->args_array[0])
+		return (NULL);
 	if (ft_strchr(cmd->args_array[0], '/'))
 	{
 		if (access(cmd->args_array[0], X_OK) == 0)
