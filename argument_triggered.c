@@ -52,6 +52,12 @@ int	expansion_found(char *cl, unsigned int *index, t_cmd **cmd_head)
 int	pipe_found(char *cl, unsigned int *index, t_cmd **cmd_head)
 {
 	*index += 1;
+	if ((*cmd_head)->args_array == NULL && (*cmd_head)->args_list == NULL
+		&& (*cmd_head)->redirections == NULL)
+	{
+		pipe_error();
+		return (-1);
+	}
 	while (is_a_whitespace(cl[*index]))
 		*index += 1;
 	if (cl[*index] == '\0' || is_a_pipe(cl[*index]))
