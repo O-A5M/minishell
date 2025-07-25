@@ -6,7 +6,7 @@
 /*   By: aelmsafe <aelmsafe@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 10:49:46 by aelmsafe          #+#    #+#             */
-/*   Updated: 2025/07/24 17:42:46 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/25 02:23:41 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ int			handle_built_ins(t_cmd *cmd, char ***env);
 int			ft_echo(t_cmd *cmd);
 int			ft_pwd(void);
 int			ft_export(t_cmd *cmd, char ***env);
-int			ft_unset(t_cmd *cmd);
+int			ft_unset(t_cmd *cmd, char ***env);
 int			ft_env(char **env);
 int			ft_exit(t_cmd *cmd);
 char		*ft_getenv(char *name, char **env);

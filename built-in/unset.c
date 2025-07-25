@@ -1,27 +1,55 @@
 #include "../minishell.h"
-#include <stddef.h>
 
-
-
-void	unset_command(t_export **list, char *var)
+char	**remove_item(char **env, int index)
 {
-	t_export	*tmp;
-	size_t		len;
+	char	**tmp;
+	int		i;
+	int		j;
 
-	tmp = NULL;
-	len = ft_strlen(var);
-	while (*list)
+	i = 0;
+	j = 0;
+	while (env[j])
+		j++;
+	tmp = malloc((j + 1) * sizeof(char *));
+	if (!tmp)
+		return (NULL);
+	j = 0;
+	while (env[i])
 	{
-		if (!ft_strncmp(var, (*list)->name, len))
+		if (i != index)
 		{
-			tmp = (*list)->previous;
-			tmp->next = (*list)->next;
-			tmp = (*list)->next;
-			tmp->previous = (*list)->previous;
-			free(*list);
-			return ;
+			tmp[j] = ft_strdup(env[i]);
+			j++;
 		}
-		else
-			(*list) = (*list)->next;
+		i++;
 	}
+	tmp[j] = NULL;
+	return (tmp);
+}
+
+int	ft_unset(t_cmd *cmd, char ***env)
+{
+	int	i;
+	int	j;
+	char	**tmp;
+
+	i = 1;
+	tmp = NULL;
+	while (cmd->args_array[i])
+	{
+		j = 0;
+		while ((*env)[j])
+		{
+			if (ft_strnstr((*env)[j], cmd->args_array[i],
+				  strlen(cmd->args_array[i])))
+			{
+				tmp = *env;
+				*env = remove_item(tmp, j);
+				free_array (tmp);
+			}
+			j++;
+		}
+		i++;
+	}
+	return (SUCCES);
 }
