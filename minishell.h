@@ -6,7 +6,7 @@
 /*   By: aelmsafe <aelmsafe@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 10:49:46 by aelmsafe          #+#    #+#             */
-/*   Updated: 2025/07/25 19:35:27 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/26 18:32:56 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ t_export	*set_env(char **env);
 char		**envdup(char **env, char *var);
 char		*search_command(t_cmd *cmd, char **path);
 int			pipe_line(t_cmd *cmd, char **env, char **path);
-int			redirection_case(t_cmd *cmd, char **env, char **path);
+int			redirection_case_pipe(t_cmd *cmd, char **env, char **path);
 int			ft_cd(t_cmd *cmd, char **env);
 int			handle_built_ins(t_cmd *cmd, char ***env);
 int			ft_echo(t_cmd *cmd);
@@ -156,5 +156,7 @@ int			ft_unset(t_cmd *cmd, char ***env);
 int			ft_env(char **env);
 int			ft_exit(t_cmd *cmd);
 char		*ft_getenv(char *name, char **env);
+int			cd_check(t_cmd *cmd, char **env);
+int			handle_fd(t_redir_list *redir);
 
 #endif /* MINISHELL_H */

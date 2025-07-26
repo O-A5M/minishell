@@ -6,7 +6,7 @@
 /*   By: oakhmouc <oakhmouc@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:15:46 by oakhmouc          #+#    #+#             */
-/*   Updated: 2025/07/24 16:02:52 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/26 21:53:08 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,11 @@
 char	**envdup(char **env, char *var)
 {
 	int		len;
+	int		index;
 	char	**ret;
 
 	len = 0;
+	index = 0;
 	while (env[len])
 		len++;
 	if (var)
@@ -25,17 +27,16 @@ char	**envdup(char **env, char *var)
 	ret = malloc((len + 1) * sizeof(char *));
 	if (!ret)
 		return (NULL);
-	len = 0;
-	while (env[len])
+	while (env[index])
 	{
-		ret[len] = ft_strdup(env[len]);
-		len++;
+		ret[index] = ft_strdup(env[index]);
+		index++;
 	}
 	if (var)
 	{
-		ret[len] = ft_strdup(var);
-		len++;
+		ret[index] = ft_strdup(var);
+		index++;
 	}
-	ret[len] = NULL;
+	ret[index] = NULL;
 	return (ret);
 }

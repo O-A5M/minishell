@@ -41,7 +41,7 @@ fclean: clean
 	rm -f $(NAME)
 	$(MAKE) fclean -C $(LIBFT_D)
 
-re: fclean $(NAME)
+re: fclean all
 
 do: all clean
 	clear

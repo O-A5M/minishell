@@ -6,7 +6,7 @@
 /*   By: aelmsafe <aelmsafe@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 18:38:40 by aelmsafe          #+#    #+#             */
-/*   Updated: 2025/07/25 19:42:36 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/26 15:09:45 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ int	main(int ac, char **av, char **env)
 		cl = read_func();
 		add_history(cl);
 		cmd = parser(cl, m_env);
-		return_status = start_execution(cmd, &m_env);
+		if (cl[0] != '\0')
+			return_status = start_execution(cmd, &m_env);
 		free(cl);
 	}
 	free_array(m_env);
