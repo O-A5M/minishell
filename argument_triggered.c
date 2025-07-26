@@ -33,18 +33,33 @@ int	quote_found(char *cl, unsigned int *index, t_cmd **cmd_head)
 
 int	expansion_found(char *cl, unsigned int *index, t_cmd **cmd_head)
 {
-	char	*arg;
+	char	*expanded;
+	char	*ifs;
+	int		i;
 	int		done_arg;
 
-	arg = get_expanded_token(cl, index);
-	if (arg == NULL)
+	expanded = get_expanded_token(cl, index);
+	ifs = " \t\n";
+	if (expanded == NULL)
 		return (-1);
-	if (is_a_pipe(cl[*index]) || is_a_redir(cl[*index])
-		|| is_a_whitespace(cl[*index]))
-		done_arg = 1;
+	i = 0;
+	while (expanded[i] && is_in_ifs(expanded[i], ifs))
+		i++;
+	if (expanded[i])
+	{
+		field_split(expanded, ifs, cmd_head);
+		;
+	}
 	else
-		done_arg = 0;
-	append_arg(&(((*cmd_head)->last_node)->args_list), arg, done_arg);
+		free(expanded);
+	// if (is_in_ifs(expanded[0], ifs))
+	// 	((*cmd_head)->last_node)->arg_is_done = 1;
+	if (is_a_pipe(cl[*index]) || is_a_redir(cl[*index])
+		|| is_a_whitespace(cl[*index]), || cl[*index] == '\0')
+		done_arg = 1;
+	// else
+	// 	done_arg = 0;
+	// append_arg(&(((*cmd_head)->last_node)->args_list), arg, done_arg);
 	return (0);
 }
 
