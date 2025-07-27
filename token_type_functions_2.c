@@ -36,3 +36,17 @@ int	is_other(char c)
 	else
 		return (0);
 }
+
+int	is_in_ifs(char c, char *ifs)
+{
+	int	i;
+
+	i = 0;
+	while (ifs[i])
+	{
+		if (c == ifs[i])
+			return (1);
+		i++;
+	}
+	return (0);
+}
