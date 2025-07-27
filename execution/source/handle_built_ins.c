@@ -6,7 +6,7 @@
 /*   By: oakhmouc <oakhmouc@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 15:02:39 by oakhmouc          #+#    #+#             */
-/*   Updated: 2025/07/26 12:05:37 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/27 19:01:36 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int		ft_exit(t_cmd *cmd)
 	return (0);
 }
 
-int	handle_built_ins(t_cmd *cmd, char ***env)
+int	handle_built_ins(t_cmd *cmd, char ***env, t_export **export)
 {
 	char	*tmp;
 
@@ -31,9 +31,9 @@ int	handle_built_ins(t_cmd *cmd, char ***env)
 	else if (!strncmp(tmp, "pwd", 4))
 		return (ft_pwd());
 	else if (!strncmp(tmp, "export", 7))
-		return (ft_export(cmd, env));
+		return (ft_export(cmd, export));
 	else if (!strncmp(tmp, "unset", 6))
-		return (ft_unset(cmd, env));
+		return (ft_unset(cmd, export));
 	else if (!strncmp(tmp, "env", 4))
 		return (ft_env(*env));
 	else if (!strncmp(tmp, "exit", 5))

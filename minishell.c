@@ -6,7 +6,7 @@
 /*   By: aelmsafe <aelmsafe@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 18:38:40 by aelmsafe          #+#    #+#             */
-/*   Updated: 2025/07/26 15:09:45 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/27 19:08:25 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*read_func(void)
 {
 	char	*line;
 
-	line = readline("ZimBomBah$ ");
+	line = readline("\033[0;32mZimBomBah$ \033[0m");
 	if (line == NULL)
 		endoffile();
 	return (line);
@@ -31,12 +31,13 @@ int	main(int ac, char **av, char **env)
 	struct sigaction	sa_quit;
 	char				*cl;
 	t_cmd				*cmd;
-	char				**m_env;
+	t_export			*export;
 
 	(void)ac;
 	(void)av;
+	export = NULL;
 	set_signals(&sa_int, &sa_quit);
-	m_env = envdup(env, NULL);
+	arr_to_list(&export, env);
 	while (1337)
 	{
 	if (sigaction(SIGINT, &sa_int, NULL) == -1
@@ -44,11 +45,10 @@ int	main(int ac, char **av, char **env)
 			sigaction_exit();
 		cl = read_func();
 		add_history(cl);
-		cmd = parser(cl, m_env);
+		cmd = parser(cl, env_to_arr(export));
 		if (cl[0] != '\0')
-			return_status = start_execution(cmd, &m_env);
+			return_status = start_execution(cmd, &export);
 		free(cl);
 	}
-	free_array(m_env);
 	rl_clear_history();
 }

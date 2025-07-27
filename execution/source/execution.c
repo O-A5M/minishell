@@ -6,11 +6,12 @@
 /*   By: oakhmouc <oakhmouc@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 18:53:51 by oakhmouc          #+#    #+#             */
-/*   Updated: 2025/07/26 18:46:10 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/27 17:45:15 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include <unistd.h>
 
 void	reset_signal(int flag)
 {
@@ -78,53 +79,68 @@ static int	child_work(t_cmd *cmd, char **env, char *cmd_ret)
 			return (WEXITSTATUS(return_status));
 		else if (WIFSIGNALED(return_status))
 			return (128 + WTERMSIG(return_status));
-		return (return_status);
 	}
 	return (SUCCES);
 }
 
-int	redirection_case_sc(t_cmd *cmd, char **env, char **path)
+void	restore_fd(int fd0, int fd1)
+{
+	dup2(fd0, STDIN_FILENO);
+	dup2(fd1, STDOUT_FILENO);
+	close(fd0);
+	close(fd1);
+}
+
+int	redirection_case_sc(t_cmd *cmd, char **env, char **path, t_export **export)
 {
 	char	*cmd_ret;
+	int		ret;
+	int		fd[2];
 
+	fd[0] = dup(STDIN_FILENO);
+	fd[1] = dup(STDOUT_FILENO);
 	while (cmd->redirections)
 	{
 		if (handle_fd(cmd->redirections) != SUCCES)
 			return (TECHNICAL_ERR);
 		cmd->redirections = cmd->redirections->next;
 	}
-	if (handle_built_ins(cmd, &env) == SUCCES)
-		return (SUCCES);
+	if ((ret = handle_built_ins(cmd, &env, export)) != CMD_N_FOUND)
+		return (restore_fd(fd[0], fd[1]), ret);
 	cmd_ret = search_command(cmd, path);
 	if (!cmd_ret && !cmd->redirections)
-		return (CMD_N_FOUND);
+		return (restore_fd(fd[0], fd[1]), CMD_N_FOUND);
 	if (cmd_ret)
 	{
 		reset_signal(0);
-		return (child_work(cmd, env, cmd_ret));
+		ret = child_work(cmd, env, cmd_ret);
+		return (restore_fd(fd[0], fd[1]), ret);
 	}
 	return (SUCCES);
 }
 
-int	simple_command(t_cmd *cmd, char **env, char **path)
+int	simple_command(t_cmd *cmd, char **env, char **path, t_export **export)
 {
 	int	ret;
 
-	ret = redirection_case_sc(cmd, env, path);
+	ret = redirection_case_sc(cmd, env, path, export);
 	return (ret);
 }
 
-int	start_execution(t_cmd *cmd, char ***m_env)
+int	start_execution(t_cmd *cmd, t_export **export)
 {
 	char	**path;
+	char	**m_env;
 
-	path = split_path(*m_env);
+	m_env = env_to_arr(*export);
+	path = split_path(m_env);
 	if (cmd->next)
-		return_status = pipe_line(cmd, *m_env, path);
+		return_status = pipe_line(cmd, m_env, path, export);
 	else
-		return_status = simple_command(cmd, *m_env, path);
+		return_status = simple_command(cmd, m_env, path, export);
 	if (return_status == CMD_N_FOUND)
 		ft_putstr_fd("Command not found\n", 2);
 	free_array(path);
+	free_array(m_env);
 	return (return_status);
 }

@@ -1,55 +1,40 @@
 #include "../minishell.h"
 
-char	**remove_item(char **env, int index)
+void	remove_element(char *name, t_export **head)
 {
-	char	**tmp;
-	int		i;
-	int		j;
+	t_export	*current;
+	t_export	*prev;
 
-	i = 0;
-	j = 0;
-	while (env[j])
-		j++;
-	tmp = malloc((j + 1) * sizeof(char *));
-	if (!tmp)
-		return (NULL);
-	j = 0;
-	while (env[i])
+	current = *head;
+	prev = NULL;
+	while (current)
 	{
-		if (i != index)
+		if (ft_strncmp(current->name, name, ft_strlen(current->name) + 1) == 0)
 		{
-			tmp[j] = ft_strdup(env[i]);
-			j++;
+			if (prev)
+				prev->next = current->next;
+			else
+				*head = current->next;
+
+			free(current->name);
+			free(current->value);
+			free(current);
+			return;
 		}
-		i++;
+		prev = current;
+		current = current->next;
 	}
-	tmp[j] = NULL;
-	return (tmp);
 }
 
-int	ft_unset(t_cmd *cmd, char ***env)
+int	ft_unset(t_cmd *cmd, t_export **export)
 {
-	int	i;
-	int	j;
-	char	**tmp;
+	int	index;
 
-	i = 1;
-	tmp = NULL;
-	while (cmd->args_array[i])
+	index = 1;
+	while (cmd->args_array[index])
 	{
-		j = 0;
-		while ((*env)[j])
-		{
-			if (ft_strnstr((*env)[j], cmd->args_array[i],
-				  strlen(cmd->args_array[i])))
-			{
-				tmp = *env;
-				*env = remove_item(tmp, j);
-				free_array (tmp);
-			}
-			j++;
-		}
-		i++;
+		remove_element(cmd->args_array[index], export);
+		index++;
 	}
 	return (SUCCES);
 }

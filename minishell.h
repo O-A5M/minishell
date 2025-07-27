@@ -6,7 +6,7 @@
 /*   By: aelmsafe <aelmsafe@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 10:49:46 by aelmsafe          #+#    #+#             */
-/*   Updated: 2025/07/26 18:32:56 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/27 19:02:00 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ void			redirection_error(char c);
 
 // Definition of the execution functions.
 
-int  		start_execution(t_cmd *cmd, char ***m_env);
+int  		start_execution(t_cmd *cmd, t_export **expot);
 char		*get_path(char *cmd, char **path);
 t_export	*ft_new_node(char *s, char *str);
 void		add_last(t_export **s, t_export *t);
@@ -138,25 +138,31 @@ int			find_command(char **path, char *s);
 void		free_env(t_export **expot);
 char		**split_path(char **m_env);
 void		free_array(char	**arr);
-t_export	*ft_new_node(char *name, char *value);
-void		add_last(t_export **s, t_export *t);
 t_export	*split_env(char **env);
-int			simple_command(t_cmd *cmd, char **env, char **path);
+int			simple_command(t_cmd *cmd, char **env, char **path
+					 , t_export **expot);
 t_export	*set_env(char **env);
 char		**envdup(char **env, char *var);
 char		*search_command(t_cmd *cmd, char **path);
-int			pipe_line(t_cmd *cmd, char **env, char **path);
-int			redirection_case_pipe(t_cmd *cmd, char **env, char **path);
+int			pipe_line(t_cmd *cmd, char **env, char **path, t_export **expot);
+int			redirection_case_pipe(t_cmd *cmd, char **env
+							, char **path, t_export **expot);
 int			ft_cd(t_cmd *cmd, char **env);
-int			handle_built_ins(t_cmd *cmd, char ***env);
+int			handle_built_ins(t_cmd *cmd, char ***env, t_export **expot);
 int			ft_echo(t_cmd *cmd);
 int			ft_pwd(void);
-int			ft_export(t_cmd *cmd, char ***env);
-int			ft_unset(t_cmd *cmd, char ***env);
+int			ft_export(t_cmd *cmd, t_export **expot);
+int			ft_unset(t_cmd *cmd, t_export **expot);
 int			ft_env(char **env);
 int			ft_exit(t_cmd *cmd);
 char		*ft_getenv(char *name, char **env);
 int			cd_check(t_cmd *cmd, char **env);
 int			handle_fd(t_redir_list *redir);
+int			arr_to_list(t_export **head, char **env);
+t_export	*new_node(char *name, char *value);
+void		add_one_node(t_export *news, t_export **head);
+char		**env_to_arr(t_export *expot);
+char		**splitenv(char *env);
+void		reset_signal(int flag);
 
 #endif /* MINISHELL_H */

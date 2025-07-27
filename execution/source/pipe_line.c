@@ -6,14 +6,15 @@
 /*   By: oakhmouc <oakhmouc@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 15:53:10 by oakhmouc          #+#    #+#             */
-/*   Updated: 2025/07/26 18:32:22 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/27 18:29:33 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 #include <stdlib.h>
 
-int	redirection_case_pipe(t_cmd *cmd, char **env, char **path)
+int	redirection_case_pipe(t_cmd *cmd, char **env, char **path
+						  , t_export **export)
 {
 	char	*cmd_ret;
 
@@ -23,7 +24,7 @@ int	redirection_case_pipe(t_cmd *cmd, char **env, char **path)
 			return (TECHNICAL_ERR);
 		cmd->redirections = cmd->redirections->next;
 	}
-	if (handle_built_ins(cmd, &env) == SUCCES)
+	if (handle_built_ins(cmd, &env, export) == SUCCES)
 		return (SUCCES);
 	cmd_ret = search_command(cmd, path);
 	if (!cmd_ret && !cmd->redirections)
@@ -74,21 +75,23 @@ static void	exit_msg(int status)
 		exit (status);
 }
 
-int	pipe_line(t_cmd *cmd, char **env, char **path)
+int	pipe_line(t_cmd *cmd, char **env, char **path, t_export **export)
 {
 	int		fd[2];
 	int		prev_fd;
 	pid_t	pid;
 
 	prev_fd = -1;
+	reset_signal(0);
 	while (cmd)
 	{
 		if ((cmd->next && pipe(fd) == -1) || (pid = fork()) == -1)
 			return (TECHNICAL_ERR);
 		else if (pid == 0)
 		{
+			reset_signal(1);
 			child_work(prev_fd, fd, cmd);
-			exit_msg(redirection_case_pipe(cmd, env, path));
+			exit_msg(redirection_case_pipe(cmd, env, path, export));
 		}
 		parent_work(&prev_fd, fd, cmd);
 		cmd = cmd->next;

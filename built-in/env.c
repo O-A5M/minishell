@@ -7,7 +7,8 @@ int	ft_env(char **env)
 	index = 0;
 	while (env[index])
 	{
-		printf("%s\n", env[index]);
+		if (ft_strchr(env[index], '='))
+			printf("%s\n", env[index]);
 		index++;
 	}
 	return (SUCCES);
