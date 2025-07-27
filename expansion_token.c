@@ -12,25 +12,30 @@
 
 #include "minishell.h"
 
-int	my_split(char *expanded, char *ifs, int *index, t_cmd **cmd_head)
+char	*my_split(char *expanded, char *ifs, int *index, t_cmd **cmd_head)
 {
-	char	*ret;
-	char	*ifs;
-	// int		flag;
+	char			*ret;
+	// char			*ifs;
+	unsigned int	start;
+	size_t			len;
 
-	ifs = " \t\n";
-	// flag = 0;
-	if (is_in_ifs(expanded[*index], ifs))
+	// ifs = " \t\n";
+	ret = NULL;
+	if (is_in_ifs(expanded[*index], ifs) && (*cmd_head)->last_node->args_list)
 		(*cmd_head)->last_node->args_list->arg_is_done = 1;
 	while (expanded[*index] && is_in_ifs(expanded[*index], ifs))
 		*index += 1;
 	if (expanded[*index])
 	{
+		start = (unsigned int)*index;
 		while (expanded[*index] && !is_in_ifs(expanded[*index], ifs))
 			*index += 1;
-		;
+		len = (size_t)((unsigned int)*index - start);
+		ret = ft_substr(expanded, start, len);
+		if (!ret)
+			return (NULL);
+		return (ret);
 	}
-	;
 	return (ret);
 }
 
@@ -38,12 +43,14 @@ int	field_split(char *expanded, char *ifs, t_cmd **cmd_head, int done_arg)
 {
 	char	*arg;
 	int		i;
+	int		ret;
 
 	if (!expanded[0])
 	{
 		free(expanded);
-		if ((*cmd_head)->last_node->args_list->arg_is_done == 0)
-			(*cmd_head)->last_node->args_list->arg_is_done == done_arg;
+		if ((*cmd_head)->last_node->args_list &&
+			(*cmd_head)->last_node->args_list->arg_is_done == 0)
+			(*cmd_head)->last_node->args_list->arg_is_done = done_arg;
 		return (0);
 	}
 	i = 0;
@@ -52,16 +59,21 @@ int	field_split(char *expanded, char *ifs, t_cmd **cmd_head, int done_arg)
 	if (!expanded[i])
 	{
 		free(expanded);
-		(*cmd_head)->last_node->args_list->arg_is_done == 1;
+		if ((*cmd_head)->last_node->args_list)
+			(*cmd_head)->last_node->args_list->arg_is_done = 1;
 		return (0);
 	}
 	i = 0;
-	arg = my_split(expanded, ifs, &i, cmd_head);
-	while (arg)
-	{
+	while ((arg = my_split(expanded, ifs, &i, cmd_head)))
 		append_arg(&(((*cmd_head)->last_node)->args_list), arg, 0);
-		arg = my_split(expanded, ifs, &i, cmd_head);
-	}
+	if ((*cmd_head)->last_node->args_list &&
+		(*cmd_head)->last_node->args_list->arg_is_done == 0)
+		(*cmd_head)->last_node->args_list->arg_is_done = done_arg;
+	ret = 0;
+	if (expanded[i])
+		ret = -1;
+	free(expanded);
+	return (ret);
 }
 
 char	*valid_token_expansion(char *cl, unsigned int *index)

@@ -120,4 +120,10 @@ void			free_redirections(t_redir_list *redirections);
 void			free_double_array(char **arr);
 void			free_command(t_cmd **command);
 
+char				*my_split(char *expanded, char *ifs, int *index,
+					t_cmd **cmd_head);
+int				field_split(char *expanded, char *ifs,
+					t_cmd **cmd_head, int done_arg);
+int				is_in_ifs(char c, char *s);
+
 #endif /* MINISHELL_H */

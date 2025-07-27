@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-/*
+
 void	print_all(t_cmd *command)
 {
 	int	cmd_counter;
@@ -53,7 +53,7 @@ void	print_all(t_cmd *command)
 		command = command->next;
 	}
 }
-*/
+
 
 t_cmd	*command_error(int ret, t_cmd **command)
 {
@@ -91,5 +91,7 @@ t_cmd	*parser(char *cl)
 		if (ret == -1)
 			break ;
 	}
+	list_to_arr(command->last_node->args_list);
+	print_all(command);
 	return (command_error(ret, &command));
 }
