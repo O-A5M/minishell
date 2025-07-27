@@ -15,6 +15,7 @@ MINISHELL_SRC_FILES = minishell.c signal.c parser.c exit.c\
 					  built-in/echo.c built-in/pwd.c built-in/env.c\
 					  built-in/export.c built-in/unset.c
 
+
 MINISHELL_OBJ_FILES = $(MINISHELL_SRC_FILES:.c=.o)
 NAME = minishell
 

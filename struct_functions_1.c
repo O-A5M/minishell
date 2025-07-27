@@ -24,6 +24,7 @@ t_cmd	*create_command(char **args_array, t_args *args_list,
 	new->args_list = args_list;
 	new->redirections = redirection_list;
 	new->next = NULL;
+	new->last_node = new;
 	return (new);
 }
 
@@ -35,7 +36,6 @@ void	append_command(t_cmd **head, char **args_array, t_args *args_list,
 	if (*head == NULL)
 	{
 		*head = create_command(args_array, args_list, redirection_list);
-		(*head)->last_node = *head;
 	}
 	else
 	{

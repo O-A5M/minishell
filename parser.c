@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+/*
 void	print_all(t_cmd *command)
 {
 	int	cmd_counter;
@@ -35,11 +35,13 @@ void	print_all(t_cmd *command)
 		while (command->redirections != NULL)
 		{
 			if (command->redirections->redir_type == 0)
-				printf("[REDIRECTION OUT]: %s\n", command->redirections->filename);
+				printf("[REDIRECTION OUT]: %s\n",
+					command->redirections->filename);
 			else if (command->redirections->redir_type == 1)
 				printf("[APPEND]: %s\n", command->redirections->filename);
 			else if (command->redirections->redir_type == 2)
-				printf("[REDIRECTION IN]: %s\n", command->redirections->filename);
+				printf("[REDIRECTION IN]: %s\n",
+					command->redirections->filename);
 			else if (command->redirections->redir_type == 3)
 				printf("[HEREDOC]: %s\n", command->redirections->filename);
 			else
@@ -51,32 +53,43 @@ void	print_all(t_cmd *command)
 		command = command->next;
 	}
 }
+*/
+
+t_cmd	*command_error(int ret, t_cmd **command)
+{
+	if (ret == -1)
+	{
+		free_command(command);
+		*command = NULL;
+	}
+	return (*command);
+}
 
 t_cmd	*parser(char *cl, char **env)
 {
 	t_cmd			*command;
 	unsigned int	index;
+	int				ret;
 
-	command = NULL;
-	append_command(&command, NULL, NULL, NULL);
+	command = create_command(NULL, NULL, NULL);
 	index = 0;
+	ret = 0;
 	while (cl[index])
 	{
 		while (is_a_whitespace(cl[index]))
 			index += 1;
 		if (is_other(cl[index]))
-			other_found(cl, &index, &command);
-		if (is_a_quote(cl[index]))
-			quote_found(cl, &index, &command, env);
-		if (is_an_expansion(cl[index]))
-			expansion_found(cl, &index, &command, env);
-		if (is_a_pipe(cl[index]))
-			pipe_found(cl, &index, &command);
-		if (is_a_redir(cl[index]))
-			redir_found(cl, &index, &command, env);
+			ret = other_found(cl, &index, &command);
+		else if (is_a_quote(cl[index]))
+			ret = quote_found(cl, &index, &command, env);
+		else if (is_an_expansion(cl[index]))
+			ret = expansion_found(cl, &index, &command, env);
+		else if (is_a_pipe(cl[index]))
+			ret = pipe_found(cl, &index, &command);
+		else if (is_a_redir(cl[index]))
+			ret = redir_found(cl, &index, &command, env);
+		if (ret == -1)
+			break ;
 	}
-	(command->last_node)->args_array
-		= list_to_arr((command->last_node)->args_list);
-	// print_all(command);
-	return (command);
+	return (command_error(ret, &command));
 }

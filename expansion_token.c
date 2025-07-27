@@ -32,10 +32,8 @@ char	*valid_token_expansion(char *cl, unsigned int *index, char **env)
 char	*expand_token(char *cl, unsigned int *index, char **env)
 {
 	char			*expanded_token;
-	// unsigned int	start_index;
 
 	*index += 1;
-	// start_index = *index;
 	if (cl[*index] == '_' || ft_isalpha(cl[*index]))
 		expanded_token = valid_token_expansion(cl, index, env);
 	else if (is_a_quote(cl[*index]))
@@ -49,51 +47,3 @@ char	*expand_token(char *cl, unsigned int *index, char **env)
 		expanded_token = ft_strdup("$");
 	return (expanded_token);
 }
-
-// char	*expand_token(char *cl, unsigned int *index, int d_quotes_flag)
-// {
-// 	char			*expanded_token;
-// 	unsigned int	start_index;
-
-// 	*index += 1;
-// 	start_index = *index;
-// 	d_quotes_flag = 0;
-// 	if (is_a_pipe(cl[*index]) || is_a_redir(cl[*index])
-// 		|| is_a_whitespace(cl[*index]) || cl[*index] == '\0')
-// 	{
-// 		return(ft_strdup("$"));
-// 	}
-// 	else if (is_a_quote(cl[*index]))
-// 	{
-// 		return(ft_strdup(""));
-// 	}
-// 	else if (ft_isalpha(cl[*index]) || cl[*index] == '_')
-// 	{
-
-// 	}
-// 	while (cl[*index])
-// 	{
-
-// 	}
-// }
-
-// char	*get_expanded_token(char *commandline, unsigned int *current_index)
-// {
-// 	char			*expanded_token;
-// 	unsigned int	start_index;
-
-// 	*current_index += 1;
-// 	start_index = *current_index;
-// 	if (is_valid_character(commandline[*current_index]))
-// 		expanded_token = valid_expansion_token(commandline, &current_index);
-// 	else if (is_quote_character(commandline[*current_index]))
-// 		expanded_token = ft_strdup("");
-// 	else if (commandline[*current_index] == '?')
-// 	{
-// 		*current_index += 1;
-// 		expanded_token = ft_itoa(EXIT_FAILURE);
-// 	}
-// 	else
-// 		expanded_token = ft_strdup("$");
-// 	return (expanded_token);
-// }

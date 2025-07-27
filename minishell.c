@@ -15,13 +15,15 @@
 
 int	return_status = 0;
 
-char	*read_func(void)
+char	*read_func(t_cmd **command)
 {
 	char	*line;
 
 	line = readline("\033[0;32mZimBomBah$ \033[0m");
 	if (line == NULL)
-		endoffile();
+	{
+		endoffile(command);
+	}
 	return (line);
 }
 
@@ -43,7 +45,7 @@ int	main(int ac, char **av, char **env)
 	if (sigaction(SIGINT, &sa_int, NULL) == -1
 			|| sigaction(SIGQUIT, &sa_quit, NULL) == -1)
 			sigaction_exit();
-		cl = read_func();
+		cl = read_func(&command);
 		add_history(cl);
 		cmd = parser(cl, env_to_arr(export));
 		if (cl[0] != '\0')

@@ -72,32 +72,20 @@ char	**list_to_arr(t_args *args)
 	char	**arr;
 	size_t	len;
 	int		index;
+	t_args	*ptr;
 
 	len = list_len(args);
 	arr = malloc(sizeof(char *) * (len + 1));
 	if (arr == NULL)
 		return (NULL);
 	index = 0;
-	while (args)
+	ptr = args;
+	while (ptr)
 	{
-		arr[index] = args->arg;
+		arr[index] = ft_strdup(ptr->arg);
 		index += 1;
-		args = args->next;
+		ptr = ptr->next;
 	}
 	arr[index] = NULL;
-	free_args(args);
 	return (arr);
-}
-
-void	free_args(t_args *args)
-{
-	t_args	*ptr;
-
-	ptr = args;
-	while (ptr != NULL)
-	{
-		args = args->next;
-		free(ptr);
-		ptr = args;
-	}
 }

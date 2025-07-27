@@ -38,40 +38,43 @@ int	is_a_redir(char c)
 
 t_redir_type	what_redirection_type(char *cl, unsigned int *index)
 {
+	char	redir_char;
+	char	c;
+
+	redir_char = cl[*index];
+	*index += 1;
+	c = cl[*index];
+	if (c == redir_char)
+		*index += 1;
+	while (is_a_whitespace(cl[*index]))
+		*index += 1;
+	if (is_a_pipe(cl[*index]) || is_a_redir(cl[*index]) || cl[*index] == '\0')
+	{
+		redirection_error(cl[*index]);
+		return (13);
+	}
+	if (c == redir_char && redir_char == '<')
+		return (HEREDOC);
+	if (c == redir_char && redir_char == '>')
+		return (APPEND);
+	if (c != redir_char && redir_char == '<')
+		return (REDIR_IN);
+	if (c != redir_char && redir_char == '>')
+		return (REDIR_OUT);
+	return (13);
+}
+
+/*
+t_redir_type	what_redirection_type(char *cl, unsigned int *index)
+{
 	char			redir_char;
 	t_redir_type	redir_type;
 
 	redir_char = cl[*index];
-	redir_type = -1;
 	*index += 1;
-	if (cl[*index] == redir_char)
-	{
-		*index += 1;
-		while (is_a_whitespace(cl[*index]))
-			*index += 1;
-		if (is_a_pipe(cl[*index]) || is_a_redir(cl[*index]) || !cl[*index])
-			redirection_error(cl[*index]);
-		else
-		{
-			if (redir_char == '<')
-				redir_type = HEREDOC;
-			else
-				redir_type = APPEND;
-		}
-	}
-	else
-	{
-		while (is_a_whitespace(cl[*index]))
-			*index += 1;
-		if (is_a_pipe(cl[*index]) || is_a_redir(cl[*index]) || !cl[*index])
-			redirection_error(cl[*index]);
-		else
-		{
-			if (redir_char == '<')
-				redir_type = REDIR_IN;
-			else
-				redir_type = REDIR_OUT;
-		}
-	}
+	// if (cl[*index] == '\0')
+	// 	redirection_error(cl[*index]);
+	redir_type = get_it(cl, index, redir_char);
 	return (redir_type);
 }
+*/
