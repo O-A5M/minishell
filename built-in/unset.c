@@ -1,27 +1,40 @@
 #include "../minishell.h"
-#include <stddef.h>
 
-
-
-void	unset_command(t_export **list, char *var)
+void	remove_element(char *name, t_export **head)
 {
-	t_export	*tmp;
-	size_t		len;
+	t_export	*current;
+	t_export	*prev;
 
-	tmp = NULL;
-	len = ft_strlen(var);
-	while (*list)
+	current = *head;
+	prev = NULL;
+	while (current)
 	{
-		if (!ft_strncmp(var, (*list)->name, len))
+		if (ft_strncmp(current->name, name, ft_strlen(current->name) + 1) == 0)
 		{
-			tmp = (*list)->previous;
-			tmp->next = (*list)->next;
-			tmp = (*list)->next;
-			tmp->previous = (*list)->previous;
-			free(*list);
-			return ;
+			if (prev)
+				prev->next = current->next;
+			else
+				*head = current->next;
+
+			free(current->name);
+			free(current->value);
+			free(current);
+			return;
 		}
-		else
-			(*list) = (*list)->next;
+		prev = current;
+		current = current->next;
 	}
+}
+
+int	ft_unset(t_cmd *cmd, t_export **export)
+{
+	int	index;
+
+	index = 1;
+	while (cmd->args_array[index])
+	{
+		remove_element(cmd->args_array[index], export);
+		index++;
+	}
+	return (SUCCES);
 }

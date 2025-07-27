@@ -6,7 +6,7 @@
 /*   By: aelmsafe <aelmsafe@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 00:39:38 by aelmsafe          #+#    #+#             */
-/*   Updated: 2025/06/16 00:39:40 by aelmsafe         ###   ########.fr       */
+/*   Updated: 2025/07/24 17:42:46 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,15 @@
 
 //	The expansion case will need to be handled separately
 //		as it can only be concluded after making the expansion.
-int	quote_found(char *cl, unsigned int *index, t_cmd **cmd_head)
+
+void	quote_found(char *cl, unsigned int *index,
+		t_cmd **cmd_head, char **env)
 {
 	char	*arg;
 	int		done_arg;
 
-	arg = get_quoted_token(cl, index);
+
+	arg = get_quoted_token(cl, index, env);
 	if (arg == NULL)
 		return (-1);
 	if (is_a_pipe(cl[*index]) || is_a_redir(cl[*index])
@@ -31,12 +34,15 @@ int	quote_found(char *cl, unsigned int *index, t_cmd **cmd_head)
 	return (0);
 }
 
-int	expansion_found(char *cl, unsigned int *index, t_cmd **cmd_head)
+
+void	expansion_found(char *cl, unsigned int *index,
+		t_cmd **cmd_head, char **env)
 {
 	char	*arg;
 	int		done_arg;
 
-	arg = get_expanded_token(cl, index);
+
+	arg = expand_token(cl, index, env);
 	if (arg == NULL)
 		return (-1);
 	if (is_a_pipe(cl[*index]) || is_a_redir(cl[*index])
@@ -71,9 +77,11 @@ int	pipe_found(char *cl, unsigned int *index, t_cmd **cmd_head)
 	return (0);
 }
 
+
+void	redir_found(char *cl, unsigned int *index,
+		t_cmd **cmd_head, char **env)
 // when filename is an empty string, this function treats it
 // as a correct filename. would need to treat that when at execution.
-int	redir_found(char *cl, unsigned int *index, t_cmd **cmd_head)
 {
 	t_redir_type	redir_type;
 	char			*token;

@@ -6,7 +6,7 @@
 /*   By: aelmsafe <aelmsafe@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:53:50 by aelmsafe          #+#    #+#             */
-/*   Updated: 2025/06/18 18:53:51 by aelmsafe         ###   ########.fr       */
+/*   Updated: 2025/07/24 17:42:46 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ t_cmd	*command_error(int ret, t_cmd **command)
 	return (*command);
 }
 
-t_cmd	*parser(char *cl)
+t_cmd	*parser(char *cl, char **env)
 {
 	t_cmd			*command;
 	unsigned int	index;
@@ -81,13 +81,13 @@ t_cmd	*parser(char *cl)
 		if (is_other(cl[index]))
 			ret = other_found(cl, &index, &command);
 		else if (is_a_quote(cl[index]))
-			ret = quote_found(cl, &index, &command);
+			ret = quote_found(cl, &index, &command, env);
 		else if (is_an_expansion(cl[index]))
-			ret = expansion_found(cl, &index, &command);
+			ret = expansion_found(cl, &index, &command, env);
 		else if (is_a_pipe(cl[index]))
 			ret = pipe_found(cl, &index, &command);
 		else if (is_a_redir(cl[index]))
-			ret = redir_found(cl, &index, &command);
+			ret = redir_found(cl, &index, &command, env);
 		if (ret == -1)
 			break ;
 	}

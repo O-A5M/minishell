@@ -6,7 +6,7 @@
 /*   By: aelmsafe <aelmsafe@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 10:49:46 by aelmsafe          #+#    #+#             */
-/*   Updated: 2025/05/21 10:55:14 by aelmsafe         ###   ########.fr       */
+/*   Updated: 2025/07/27 19:02:00 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,16 @@
 # include <stdlib.h>
 # include <signal.h>
 # include <unistd.h>
+# include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "libft/libft.h"
+# include <sys/wait.h>
+# define SUCCES 0
+# define TECHNICAL_ERR 1
+# define CMD_N_FOUND 127
+
+extern int	return_status;
 
 //	List that for every node, contains the variable name in `name`,
 //	along with the corresponding value stored in `value`.
@@ -29,7 +36,6 @@ typedef struct s_export
 	char			*name;
 	char			*value;
 	struct s_export	*next;
-	struct s_export	*previous;
 }				t_export;
 
 //	Enum type of data that conatins all the possible redirection types,
@@ -71,9 +77,11 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }			t_cmd;
 
-//	All the necessary function prototypes for our unique minishell project.
+
+//	All the necessary function prototypes for our unique minishell project
+//	in the parsing part.
+t_cmd			*parser(char *cl, char **env);
 char			*read_func(t_cmd **command);
-t_cmd			*parser(char *cl);
 void			set_signals(struct sigaction *sa_int,
 					struct sigaction *sa_quit);
 void			handle_signal(int signum);
@@ -86,17 +94,25 @@ t_redir_type	what_redirection_type(char *cl, unsigned int *index);
 int				is_an_expansion(char c);
 int				is_a_quote(char c);
 int				is_other(char c);
-int				quote_found(char *cl, unsigned int *index, t_cmd **command);
-int				pipe_found(char *cl, unsigned int *index, t_cmd **command);
-int				redir_found(char *cl, unsigned int *index, t_cmd **command);
-int				expansion_found(char *cl, unsigned int *index, t_cmd **command);
+
+void			quote_found(char *cl, unsigned int *index,
+					t_cmd **command, char **env);
+void			pipe_found(char *cl, unsigned int *index,
+					t_cmd **command);
+void			redir_found(char *cl, unsigned int *index,
+					t_cmd **command, char **env);
+void			expansion_found(char *cl, unsigned int *index,
+					t_cmd **command, char **env);
+
+char			*valid_token_expansion(char *cl, unsigned int *index, 
+					char **env);
+char			*expand_token(char *cl, unsigned int *index, char **env);
+char			*expand_quoted_text(char *quoted_text, char **env);
+char			*get_quoted_token(char *cl, unsigned int *index, char **env);
 int				other_found(char *cl, unsigned int *index, t_cmd **command);
 char			*get_normal_token(char *cl, unsigned int *index);
 char			*add_text(char *text_chunk, char *dst);
-char			*valid_token_expansion(char *cl, unsigned int *index);
-char			*get_expanded_token(char *cl, unsigned int *index);
-char			*expand_quoted_text(char *quoted_text);
-char			*get_quoted_token(char *cl, unsigned int *index);
+char			*get_expanded_token(char *cl, unsigned int *index
 void			pipe_error(void);
 void			allocation_error(void);
 t_cmd			*create_command(char **args_array, t_args *args_list,
@@ -111,10 +127,45 @@ char			**list_to_arr(t_args *args);
 t_redir_list	*create_redir(t_redir_type redir_type, char *filename);
 void			append_redir(t_cmd *cmd_head, t_redir_type redir_type,
 					char *filename);
-
 void			unclosed_quotes_error(void);
 void			redirection_error(char c);
 
+// Definition of the execution functions.
+
+int  		start_execution(t_cmd *cmd, t_export **expot);
+char		*get_path(char *cmd, char **path);
+t_export	*ft_new_node(char *s, char *str);
+void		add_last(t_export **s, t_export *t);
+int			find_command(char **path, char *s);
+void		free_env(t_export **expot);
+char		**split_path(char **m_env);
+void		free_array(char	**arr);
+t_export	*split_env(char **env);
+int			simple_command(t_cmd *cmd, char **env, char **path
+					 , t_export **expot);
+t_export	*set_env(char **env);
+char		**envdup(char **env, char *var);
+char		*search_command(t_cmd *cmd, char **path);
+int			pipe_line(t_cmd *cmd, char **env, char **path, t_export **expot);
+int			redirection_case_pipe(t_cmd *cmd, char **env
+							, char **path, t_export **expot);
+int			ft_cd(t_cmd *cmd, char **env);
+int			handle_built_ins(t_cmd *cmd, char ***env, t_export **expot);
+int			ft_echo(t_cmd *cmd);
+int			ft_pwd(void);
+int			ft_export(t_cmd *cmd, t_export **expot);
+int			ft_unset(t_cmd *cmd, t_export **expot);
+int			ft_env(char **env);
+int			ft_exit(t_cmd *cmd);
+char		*ft_getenv(char *name, char **env);
+int			cd_check(t_cmd *cmd, char **env);
+int			handle_fd(t_redir_list *redir);
+int			arr_to_list(t_export **head, char **env);
+t_export	*new_node(char *name, char *value);
+void		add_one_node(t_export *news, t_export **head);
+char		**env_to_arr(t_export *expot);
+char		**splitenv(char *env);
+void		reset_signal(int flag);
 void			free_args(t_args *args);
 void			free_redirections(t_redir_list *redirections);
 void			free_double_array(char **arr);

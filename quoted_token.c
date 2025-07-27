@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   quoted.c                                           :+:      :+:    :+:   */
+/*   quoted_token.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aelmsafe <aelmsafe@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 17:21:10 by aelmsafe          #+#    #+#             */
-/*   Updated: 2025/06/02 17:21:12 by aelmsafe         ###   ########.fr       */
+/*   Updated: 2025/07/24 17:39:03 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*add_text(char *text_chunk, char *dst)
 	return (result);
 }
 
-char	*expand_quoted_text(char *quoted_text)
+char	*expand_quoted_text(char *quoted_text, char **env)
 {
 	unsigned int	start_index;
 	unsigned int	index;
@@ -47,7 +47,7 @@ char	*expand_quoted_text(char *quoted_text)
 					index - start_index), expanded_quoted_text);
 		if (quoted_text[index] != '\0')
 			expanded_quoted_text
-				= add_text(get_expanded_token(quoted_text, &index),
+				= add_text(get_expanded_token(quoted_text, &index, env),
 					expanded_quoted_text);
 	}
 	if (expanded_quoted_text == NULL)
@@ -56,7 +56,7 @@ char	*expand_quoted_text(char *quoted_text)
 	return (expanded_quoted_text);
 }
 
-char	*get_quoted_token(char *cl, unsigned int *index)
+char	*get_quoted_token(char *cl, unsigned int *index, char **env)
 {
 	unsigned int	start_index;
 	char			*quoted_text;
@@ -75,6 +75,6 @@ char	*get_quoted_token(char *cl, unsigned int *index)
 	quoted_text = ft_substr(cl, start_index, *index - start_index);
 	*index += 1;
 	if (quote_sign == '"')
-		quoted_text = expand_quoted_text(quoted_text);
+		quoted_text = expand_quoted_text(quoted_text, env);
 	return (quoted_text);
 }

@@ -3,7 +3,19 @@ CFLAGS = -g -Wall -Wextra -Werror
 
 # Minishell variables
 
-MINISHELL_SRC_FILES = minishell.c signal.c parser.c exit_1.c exit_2.c expansion_token.c argument_triggered.c other_token.c quoted_token.c struct_functions_1.c struct_functions_2.c struct_functions_3.c token_type_functions_1.c token_type_functions_2.c free.c
+MINISHELL_SRC_FILES = minishell.c signal.c parser.c exit.c\
+					  manage_env_list.c\
+					  expansion_token.c argument_triggered.c\
+					  other_token.c quoted_token.c struct_functions_1.c\
+					  struct_functions_2.c struct_functions_3.c\
+					  token_type_functions_1.c token_type_functions_2.c\
+					  execution/source/execution.c execution/source/execution_utils.c\
+					  environment/set_env.c execution/source/pipe_line.c\
+					  execution/source/handle_built_ins.c built-in/cd.c\
+					  built-in/echo.c built-in/pwd.c built-in/env.c\
+					  built-in/export.c built-in/unset.c
+
+
 MINISHELL_OBJ_FILES = $(MINISHELL_SRC_FILES:.c=.o)
 NAME = minishell
 
@@ -30,7 +42,10 @@ fclean: clean
 	rm -f $(NAME)
 	$(MAKE) fclean -C $(LIBFT_D)
 
-re: fclean $(NAME)
+re: fclean all
+
+do: all clean
+	clear
 
 # Extra rules
 
