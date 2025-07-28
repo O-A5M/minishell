@@ -6,7 +6,7 @@
 /*   By: aelmsafe <aelmsafe@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 18:38:40 by aelmsafe          #+#    #+#             */
-/*   Updated: 2025/07/27 19:08:25 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/27 20:09:22 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*read_func(void)
 {
 	char	*line;
 
-	line = readline("\033[0;32mZimBomBah$ \033[0m");
+	line = readline("\001\033[0;32m\002ZimBomBah$ \001\033[0m\002");
 	if (line == NULL)
 		endoffile();
 	return (line);
