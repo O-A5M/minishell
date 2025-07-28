@@ -6,42 +6,11 @@
 /*   By: oakhmouc <oakhmouc@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 12:15:46 by oakhmouc          #+#    #+#             */
-/*   Updated: 2025/07/27 19:02:02 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/28 15:50:24 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-#include <stddef.h>
-#include <stdlib.h>
-
-// char	**envdup(char **env, char *var)
-// {
-// 	int		len;
-// 	int		index;
-// 	char	**ret;
-//
-// 	len = 0;
-// 	index = 0;
-// 	while (env[len])
-// 		len++;
-// 	if (var)
-// 		len++;
-// 	ret = malloc((len + 1) * sizeof(char *));
-// 	if (!ret)
-// 		return (NULL);
-// 	while (env[index])
-// 	{
-// 		ret[index] = ft_strdup(env[index]);
-// 		index++;
-// 	}
-// 	if (var)
-// 	{
-// 		ret[index] = ft_strdup(var);
-// 		index++;
-// 	}
-// 	ret[index] = NULL;
-// 	return (ret);
-// }
 
 t_export	*new_node(char *name, char *value)
 {
@@ -58,7 +27,7 @@ t_export	*new_node(char *name, char *value)
 
 void	add_one_node(t_export *new, t_export **head)
 {
-	t_export *tmp;
+	t_export	*tmp;
 
 	tmp = NULL;
 	if (!head || !new)
@@ -74,53 +43,6 @@ void	add_one_node(t_export *new, t_export **head)
 	}
 }
 
-char	**splitenv(char *env)
-{
-	int		i;
-	int		j;
-	char	**ret;
-
-	i = 0;
-	j = 0;
-	ret = malloc(sizeof(char *) * 3);
-	if (!ret)
-		return (NULL);
-	while (env[i] && env[i] != '=')
-		i++;
-	if (env[i] == '\0')
-		ret[1] = NULL;
-	else if (env[i + 1] == '\0')
-		ret[1] = ft_strdup("");
-	else
-	{
-		while (env[i + j])
-			j++;
-		ret[1] = ft_substr(env, i + 1, j);
-	}
-	ret[0] = ft_substr(env, 0, i);
-	ret[2] = NULL;
-	return (ret);
-}
-
-int	arr_to_list(t_export **head, char **env)
-{
-	int		index;
-	char	**tmp;
-
-	index = 0;
-	tmp = NULL;
-	if (!head)
-		return (TECHNICAL_ERR);
-	while (env[index])
-	{
-		tmp = splitenv(env[index]);
-		add_one_node(new_node(tmp[0], tmp[1]), head);
-		index++;
-	}
-	free_array(tmp);
-	return (SUCCES);
-}
-
 static size_t	list_size(t_export *export)
 {
 	size_t	ret;
@@ -132,6 +54,23 @@ static size_t	list_size(t_export *export)
 		export = export->next;
 	}
 	return (ret);
+}
+
+void	copy_to_env(t_export *export, char ***ret, int index)
+{
+	char	*tmp;
+
+	tmp = NULL;
+	if (export->name && !export->value)
+		(*ret)[index] = ft_strdup(export->name);
+	else if (export->name && export->value[0] == '\0')
+		(*ret)[index] = ft_strjoin(export->name, "=");
+	else
+	{
+		tmp = ft_strjoin(export->name, "=");
+		(*ret)[index] = ft_strjoin(tmp, export->value);
+		free(tmp);
+	}
 }
 
 char	**env_to_arr(t_export *export)
@@ -147,13 +86,7 @@ char	**env_to_arr(t_export *export)
 		return (NULL);
 	while (export)
 	{
-		if (export->name && !export->value)
-			ret[index] = ft_strdup(export->name);
-		else if (export->name && export->value[0] == '\0')
-			ret[index] = ft_strjoin(export->name, "=");
-		else
-			ret[index] = ft_strjoin(ft_strjoin(export->name, "=")
-						   , export->value);
+		copy_to_env(export, &ret, index);
 		index++;
 		export = export->next;
 	}

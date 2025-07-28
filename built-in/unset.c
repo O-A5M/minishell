@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   unset.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: oakhmouc <oakhmouc@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/28 15:45:23 by oakhmouc          #+#    #+#             */
+/*   Updated: 2025/07/28 15:45:25 by oakhmouc         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 void	remove_element(char *name, t_export **head)
@@ -15,11 +27,10 @@ void	remove_element(char *name, t_export **head)
 				prev->next = current->next;
 			else
 				*head = current->next;
-
 			free(current->name);
 			free(current->value);
 			free(current);
-			return;
+			return ;
 		}
 		prev = current;
 		current = current->next;

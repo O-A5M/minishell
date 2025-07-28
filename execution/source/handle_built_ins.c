@@ -6,18 +6,11 @@
 /*   By: oakhmouc <oakhmouc@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 15:02:39 by oakhmouc          #+#    #+#             */
-/*   Updated: 2025/07/27 19:01:36 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/28 14:05:06 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-int		ft_exit(t_cmd *cmd)
-{
-	printf("hello");
-	printf("%s", cmd->args_array[0]);
-	return (0);
-}
 
 int	handle_built_ins(t_cmd *cmd, char ***env, t_export **export)
 {
@@ -37,7 +30,7 @@ int	handle_built_ins(t_cmd *cmd, char ***env, t_export **export)
 	else if (!strncmp(tmp, "env", 4))
 		return (ft_env(*env));
 	else if (!strncmp(tmp, "exit", 5))
-		return (ft_exit(cmd));
+		return (ft_exit(&cmd, export, env), SUCCES);
 	else
 		return (CMD_N_FOUND);
 	return (SUCCES);

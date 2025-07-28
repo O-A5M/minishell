@@ -6,7 +6,7 @@
 /*   By: oakhmouc <oakhmouc@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 18:15:37 by oakhmouc          #+#    #+#             */
-/*   Updated: 2025/07/27 15:57:39 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/28 15:52:53 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ char	**split_path(char **env)
 	tmp2 = NULL;
 	while (env[index])
 	{
-		if ((tmp2 = ft_strnstr(env[index], "PATH", 5)))
+		tmp2 = ft_strnstr(env[index], "PATH", 5);
+		if (tmp2)
 		{
 			tmp1 = ft_split(tmp2, '=');
 			ret = ft_split(tmp1[1], ':');
@@ -58,5 +59,6 @@ char	*ft_getenv(char *name, char **env)
 	__environ = env;
 	var = getenv(name);
 	__environ = tmp;
+	free_array(env);
 	return (var);
 }

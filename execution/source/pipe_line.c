@@ -6,7 +6,7 @@
 /*   By: oakhmouc <oakhmouc@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 15:53:10 by oakhmouc          #+#    #+#             */
-/*   Updated: 2025/07/27 18:29:33 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/28 16:54:58 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdlib.h>
 
 int	redirection_case_pipe(t_cmd *cmd, char **env, char **path
-						  , t_export **export)
+							, t_export **export)
 {
 	char	*cmd_ret;
 
@@ -31,6 +31,8 @@ int	redirection_case_pipe(t_cmd *cmd, char **env, char **path
 		exit (CMD_N_FOUND);
 	if (cmd_ret != NULL)
 	{
+		if (is_directory(cmd_ret))
+			dir_message(cmd_ret);
 		execve(cmd_ret, cmd->args_array, env);
 		return (TECHNICAL_ERR);
 	}
@@ -85,7 +87,8 @@ int	pipe_line(t_cmd *cmd, char **env, char **path, t_export **export)
 	reset_signal(0);
 	while (cmd)
 	{
-		if ((cmd->next && pipe(fd) == -1) || (pid = fork()) == -1)
+		pid = fork();
+		if ((cmd->next && pipe(fd) == -1) || pid == -1)
 			return (TECHNICAL_ERR);
 		else if (pid == 0)
 		{
@@ -96,6 +99,7 @@ int	pipe_line(t_cmd *cmd, char **env, char **path, t_export **export)
 		parent_work(&prev_fd, fd, cmd);
 		cmd = cmd->next;
 	}
-	while (wait(NULL) > 0);
+	while (wait(NULL) > 0)
+		;
 	return (SUCCES);
 }

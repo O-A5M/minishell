@@ -6,7 +6,7 @@
 /*   By: oakhmouc <oakhmouc@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 15:03:26 by oakhmouc          #+#    #+#             */
-/*   Updated: 2025/07/26 11:42:40 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/28 15:43:39 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ static int	home_cd(t_cmd *cmd, char **env)
 	}
 	if (!ft_strncmp(user, "\0", 1))
 		return (SUCCES);
-	if (!(ret = chdir(user)))
+	ret = chdir(user);
+	if (!ret)
 		return (SUCCES);
 	else
 	{
@@ -36,14 +37,15 @@ static int	home_cd(t_cmd *cmd, char **env)
 	}
 }
 
-int	ft_cd(t_cmd *cmd,char **env)
+int	ft_cd(t_cmd *cmd, char **env)
 {
 	int		ret;
 
 	ret = 0;
 	if (cmd->args_array[1])
 	{
-		if (!(ret = chdir(cmd->args_array[1])))
+		ret = chdir(cmd->args_array[1]);
+		if (!ret)
 			return (SUCCES);
 		else
 		{

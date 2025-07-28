@@ -6,69 +6,24 @@
 /*   By: oakhmouc <oakhmouc@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 18:53:51 by oakhmouc          #+#    #+#             */
-/*   Updated: 2025/07/27 17:45:15 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/28 15:29:37 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include <unistd.h>
-
-void	reset_signal(int flag)
-{
-	if (flag == 0)
-	{
-		signal(SIGINT, SIG_IGN);
-		signal(SIGQUIT, SIG_IGN);
-	}
-	else
-	{
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
-	}
-}
-
-int	handle_fd(t_redir_list *redir)
-{
-	int	fd;
-
-	fd = -1;
-	if (redir->redir_type == REDIR_OUT)
-	{
-		if ((fd = open(redir->filename, O_CREAT | O_RDWR | O_TRUNC
-				 , 0644)) != -1)
-			dup2(fd, STDOUT_FILENO);
-	}
-	else if (redir->redir_type == REDIR_IN)
-	{
-		if ((fd = open(redir->filename, O_RDONLY, 0644)) != -1)
-			dup2(fd, STDIN_FILENO);
-		else
-		{
-			write(2, "No such file or directory\n", 26);
-			return (TECHNICAL_ERR);
-		}
-	}
-	else if (redir->redir_type == APPEND)
-	{
-		if ((fd = open(redir->filename, O_CREAT | O_APPEND | O_RDWR
-				 , 0644)) != -1)
-			dup2(fd, STDOUT_FILENO);
-	}
-	if (fd == -1)
-		return (TECHNICAL_ERR);
-	close(fd);
-	return (SUCCES);
-}
 
 static int	child_work(t_cmd *cmd, char **env, char *cmd_ret)
 {
 	pid_t	pid;
 
-	if ((pid = fork()) < 0)
+	pid = fork();
+	if (pid < 0)
 		return (TECHNICAL_ERR);
 	else if (pid == 0)
 	{
 		reset_signal(1);
+		if (is_directory(cmd_ret))
+			dir_message(cmd_ret);
 		execve(cmd_ret, cmd->args_array, env);
 		exit (TECHNICAL_ERR);
 	}
@@ -81,14 +36,6 @@ static int	child_work(t_cmd *cmd, char **env, char *cmd_ret)
 			return (128 + WTERMSIG(return_status));
 	}
 	return (SUCCES);
-}
-
-void	restore_fd(int fd0, int fd1)
-{
-	dup2(fd0, STDIN_FILENO);
-	dup2(fd1, STDOUT_FILENO);
-	close(fd0);
-	close(fd1);
 }
 
 int	redirection_case_sc(t_cmd *cmd, char **env, char **path, t_export **export)
@@ -105,7 +52,8 @@ int	redirection_case_sc(t_cmd *cmd, char **env, char **path, t_export **export)
 			return (TECHNICAL_ERR);
 		cmd->redirections = cmd->redirections->next;
 	}
-	if ((ret = handle_built_ins(cmd, &env, export)) != CMD_N_FOUND)
+	ret = handle_built_ins(cmd, &env, export);
+	if (ret != CMD_N_FOUND)
 		return (restore_fd(fd[0], fd[1]), ret);
 	cmd_ret = search_command(cmd, path);
 	if (!cmd_ret && !cmd->redirections)

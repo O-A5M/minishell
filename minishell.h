@@ -6,7 +6,7 @@
 /*   By: aelmsafe <aelmsafe@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 10:49:46 by aelmsafe          #+#    #+#             */
-/*   Updated: 2025/07/27 19:02:00 by oakhmouc         ###   ########.fr       */
+/*   Updated: 2025/07/28 15:29:21 by oakhmouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <readline/history.h>
 # include "libft/libft.h"
 # include <sys/wait.h>
+# include <sys/stat.h>
 # define SUCCES 0
 # define TECHNICAL_ERR 1
 # define CMD_N_FOUND 127
@@ -154,7 +155,6 @@ int			ft_pwd(void);
 int			ft_export(t_cmd *cmd, t_export **expot);
 int			ft_unset(t_cmd *cmd, t_export **expot);
 int			ft_env(char **env);
-int			ft_exit(t_cmd *cmd);
 char		*ft_getenv(char *name, char **env);
 int			cd_check(t_cmd *cmd, char **env);
 int			handle_fd(t_redir_list *redir);
@@ -164,5 +164,10 @@ void		add_one_node(t_export *news, t_export **head);
 char		**env_to_arr(t_export *expot);
 char		**splitenv(char *env);
 void		reset_signal(int flag);
+void		free_export_list(t_export *head);
+void		ft_exit(t_cmd **cmd, t_export **expot, char ***env);
+int			is_directory(char *path);
+void		dir_message(char *cmd);
+void		restore_fd(int fd1, int fd2);
 
 #endif /* MINISHELL_H */
