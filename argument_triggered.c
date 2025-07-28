@@ -54,7 +54,8 @@ int	expansion_found(char *cl, unsigned int *index, t_cmd **cmd_head)
 			(*cmd_head)->last_node->args_list->arg_is_done = done_arg;
 		return (0);
 	}
-	field_split(expanded, ifs, cmd_head, done_arg);
+	else
+		field_split(expanded, ifs, cmd_head, done_arg);
 	return (0);
 }
 

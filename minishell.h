@@ -126,5 +126,6 @@ char				*my_split(char *expanded, char *ifs, int *index,
 int				field_split(char *expanded, char *ifs,
 					t_cmd **cmd_head, int done_arg);
 int				is_in_ifs(char c, char *s);
+void			print_all(t_cmd *command);
 
 #endif /* MINISHELL_H */

@@ -91,7 +91,6 @@ t_cmd	*parser(char *cl)
 		if (ret == -1)
 			break ;
 	}
-	list_to_arr(command->last_node->args_list);
-	print_all(command);
+	command->last_node->args_array = list_to_arr(command->last_node->args_list);
 	return (command_error(ret, &command));
 }

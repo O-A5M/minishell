@@ -43,6 +43,7 @@ int	main(void)
 		command = parser(cl);
 		if (command != NULL)
 		{
+			// print_all(command);
 			// execute(command);
 			free_command(&command);
 		}

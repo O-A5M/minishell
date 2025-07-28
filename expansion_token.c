@@ -49,9 +49,9 @@ int	field_split(char *expanded, char *ifs, t_cmd **cmd_head, int done_arg)
 	if (!expanded[i])
 	{
 		(*cmd_head)->last_node->expansion_flag = 1;
-		free(expanded);
 		if ((*cmd_head)->last_node->args_list)
 			(*cmd_head)->last_node->args_list->arg_is_done = 1;
+		free(expanded);
 		return (0);
 	}
 	i = 0;
