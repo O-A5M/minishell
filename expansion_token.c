@@ -15,11 +15,9 @@
 char	*my_split(char *expanded, char *ifs, int *index, t_cmd **cmd_head)
 {
 	char			*ret;
-	// char			*ifs;
 	unsigned int	start;
 	size_t			len;
 
-	// ifs = " \t\n";
 	ret = NULL;
 	if (is_in_ifs(expanded[*index], ifs) && (*cmd_head)->last_node->args_list)
 		(*cmd_head)->last_node->args_list->arg_is_done = 1;
@@ -45,19 +43,12 @@ int	field_split(char *expanded, char *ifs, t_cmd **cmd_head, int done_arg)
 	int		i;
 	int		ret;
 
-	if (!expanded[0])
-	{
-		free(expanded);
-		if ((*cmd_head)->last_node->args_list &&
-			(*cmd_head)->last_node->args_list->arg_is_done == 0)
-			(*cmd_head)->last_node->args_list->arg_is_done = done_arg;
-		return (0);
-	}
 	i = 0;
 	while (expanded[i] && is_in_ifs(expanded[i], ifs))
 		i++;
 	if (!expanded[i])
 	{
+		(*cmd_head)->last_node->expansion_flag = 1;
 		free(expanded);
 		if ((*cmd_head)->last_node->args_list)
 			(*cmd_head)->last_node->args_list->arg_is_done = 1;

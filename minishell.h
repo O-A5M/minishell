@@ -66,6 +66,7 @@ typedef struct s_cmd
 {
 	char			**args_array;
 	t_args			*args_list;
+	int				expansion_flag;
 	t_redir_list	*redirections;
 	struct s_cmd	*last_node;
 	struct s_cmd	*next;

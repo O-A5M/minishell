@@ -35,7 +35,6 @@ int	expansion_found(char *cl, unsigned int *index, t_cmd **cmd_head)
 {
 	char	*expanded;
 	char	*ifs;
-	// int		i;
 	int		done_arg;
 
 	expanded = get_expanded_token(cl, index);
@@ -46,9 +45,16 @@ int	expansion_found(char *cl, unsigned int *index, t_cmd **cmd_head)
 	if (is_a_pipe(cl[*index]) || is_a_redir(cl[*index])
 		|| is_a_whitespace(cl[*index]) || cl[*index] == '\0')
 		done_arg = 1;
-	// i = 0;
+	if (!expanded[0])
+	{
+		(*cmd_head)->last_node->expansion_flag = 1;
+		free(expanded);
+		if ((*cmd_head)->last_node->args_list &&
+			(*cmd_head)->last_node->args_list->arg_is_done == 0)
+			(*cmd_head)->last_node->args_list->arg_is_done = done_arg;
+		return (0);
+	}
 	field_split(expanded, ifs, cmd_head, done_arg);
-	// append_arg(&(((*cmd_head)->last_node)->args_list), arg, done_arg);
 	return (0);
 }
 
@@ -57,7 +63,7 @@ int	pipe_found(char *cl, unsigned int *index, t_cmd **cmd_head)
 {
 	*index += 1;
 	if ((*cmd_head)->args_array == NULL && (*cmd_head)->args_list == NULL
-		&& (*cmd_head)->redirections == NULL)
+		&& (*cmd_head)->redirections == NULL && (*cmd_head)->expansion_flag == 0)
 	{
 		pipe_error();
 		return (-1);

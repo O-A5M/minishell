@@ -22,6 +22,7 @@ t_cmd	*create_command(char **args_array, t_args *args_list,
 		return (NULL);
 	new->args_array = args_array;
 	new->args_list = args_list;
+	new->expansion_flag = 0;
 	new->redirections = redirection_list;
 	new->next = NULL;
 	new->last_node = new;
