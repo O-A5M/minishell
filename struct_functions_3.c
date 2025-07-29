@@ -12,6 +12,33 @@
 
 #include "minishell.h"
 
+int	read_heredoc(t_redir_type redir_type, char *filename, int expand)
+{
+	static int	id;
+	char		*readd;
+	int			fd;
+
+	if (redir_type != HEREDOC)
+		return 0;
+	fd = open(ft_strjoin("/tmp/.mshd", ft_itoa(id)), O_CREAT | O_RDWR | O_TRUNC, 0600);
+	if (fd < 0)
+	{
+		perror("Couldn't Open File For Here-doc!\n");
+		return (-1);
+	}
+	id++;
+	while ((readd = readline("> ")) != NULL && ft_strncmp(readd, filename, ft_strlen(filename) + 1))
+	{
+		if (expand)
+			readd = expand_quoted_text(readd);
+		write(fd, readd, ft_strlen(readd));
+		write(fd, "\n", 1);
+		// read;
+	}
+	close(fd);
+	return (0);
+}
+
 t_redir_list	*create_redir(t_redir_type redir_type, char *filename)
 {
 	t_redir_list	*new;

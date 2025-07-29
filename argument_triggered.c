@@ -89,15 +89,19 @@ int	redir_found(char *cl, unsigned int *index, t_cmd **cmd_head)
 	t_redir_type	redir_type;
 	char			*token;
 	char			*filename;
+	int				expand;
 
+	expand = 1;
 	filename = NULL;
-	redir_type = what_redirection_type(cl, index);
-	if (redir_type == 13)
+	if ((redir_type = what_redirection_type(cl, index)) == 13)
 		return (-1);
 	while (is_other(cl[*index]) || is_a_quote(cl[*index]) || cl[*index] == '$')
 	{
 		if (is_a_quote(cl[*index]))
+		{
+			expand = 0;
 			token = get_quoted_token(cl, index);
+		}
 		else if (cl[*index] == '$')
 			token = get_expanded_token(cl, index);
 		else if (is_other(cl[*index]))
@@ -110,6 +114,8 @@ int	redir_found(char *cl, unsigned int *index, t_cmd **cmd_head)
 		filename = add_text(token, filename);
 	}
 	append_redir(*cmd_head, redir_type, filename);
+	if (read_heredoc(redir_type, filename, expand) == -1)
+		return (-1);
 	return (0);
 }
 

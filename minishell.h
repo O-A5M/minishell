@@ -20,6 +20,7 @@
 # include <unistd.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <fcntl.h>
 # include "libft/libft.h"
 
 //	List that for every node, contains the variable name in `name`,
@@ -127,5 +128,6 @@ int				field_split(char *expanded, char *ifs,
 					t_cmd **cmd_head, int done_arg);
 int				is_in_ifs(char c, char *s);
 void			print_all(t_cmd *command);
+int				read_heredoc(t_redir_type redir_type, char *filename, int expand);
 
 #endif /* MINISHELL_H */
